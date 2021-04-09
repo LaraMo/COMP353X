@@ -1,0 +1,26 @@
+//buttons in crud
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+//read only inputs
+input:read-only {
+    border: 1px solid transparent;
+    background: transparent;
+
+}
+
+input  {
+    font-size: 1rem;
+    border-style: solid;
+    border-color: lightgray;
+    border-radius: 2px;
+    outline: transparent;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    align-items: baseline !important;
+}

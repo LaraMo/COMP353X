@@ -1,0 +1,28 @@
+.personCard{
+  &Container {
+    max-width: 900px;
+    margin: auto;
+    > * {
+      margin: 10px;
+    }
+  }
+  &-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-entery {
+    display: flex;
+    align-items: baseline;
+    margin: 5px;
+    > p  {
+      padding-right: 5px;
+    }
+  }
+  &-address {
+    display: flex;
+    > * {
+      padding: 2px;
+    }
+  }
+}
