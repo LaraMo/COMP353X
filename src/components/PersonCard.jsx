@@ -16,15 +16,15 @@ export default function PersonCard(props) {
     }
     return (
         <CardContainer>
-            <CardContainer.Header className="personCard-title">
+            <CardContainer.Header className="title">
                 <div>
                     Card#
-                    <input name="first" onChange={onChange}value={med} readOnly={!isEdit}/>
+                    <input name="first" onChange={onChange} value={med} readOnly={!isEdit}/>
                 </div>
                 {mode !== "add" && <X/>}
             </CardContainer.Header>
             {mode === "add" ?
-              <div class="form-check">
+              <div class="personCard-isInfected">
                 <input type="checkbox" onChange={()=>{}}value={isInfected}/> 
                 {/* todo event */}
                 <label>Is Infected</label>
@@ -42,7 +42,7 @@ export default function PersonCard(props) {
                             First
                         </Form.Label>
                         <Col sm="10">
-                        <input name="first" onChange={onChange}value={first} readOnly={!isEdit}/>
+                        <input name="first" onChange={onChange} value={first} readOnly={!isEdit}/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
@@ -50,7 +50,7 @@ export default function PersonCard(props) {
                             Last
                         </Form.Label>
                         <Col sm="10">
-                        <input name="last" onChange={onChange}value={last} readOnly={!isEdit}/>
+                        <input name="last" onChange={onChange} value={last} readOnly={!isEdit}/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
@@ -58,7 +58,7 @@ export default function PersonCard(props) {
                             <Calendar/> DOB
                         </Form.Label>
                         <Col sm="10">
-                            <input name="dob" onChange={onChange}value={dob} readOnly={!isEdit}/>
+                            <input name="dob" onChange={onChange} value={dob} readOnly={!isEdit}/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
@@ -66,7 +66,7 @@ export default function PersonCard(props) {
                             <Phone/> Phone
                         </Form.Label>
                         <Col sm="10">
-                            <input name="telephone" onChange={onChange}value={telephone} readOnly={!isEdit}/>
+                            <input name="telephone" onChange={onChange} value={telephone} readOnly={!isEdit}/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
@@ -74,7 +74,7 @@ export default function PersonCard(props) {
                             <Mail/> Email
                         </Form.Label>
                         <Col sm="10">
-                            <input name="email" onChange={onChange}value={email} readOnly={!isEdit}/>
+                            <input name="email" onChange={onChange} value={email} readOnly={!isEdit}/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
@@ -82,8 +82,8 @@ export default function PersonCard(props) {
                             <Home/> Address
                         </Form.Label>
                         <Col sm="10">
-                            <input sie="3" name="address" onChange={onChange}value={address} readOnly={!isEdit}/>
-                            <input size="1" name="provice" onChange={onChange}value={province} readOnly={!isEdit}/>
+                            <input sie="3" name="address" onChange={onChange} value={address} readOnly={!isEdit}/>
+                            <input size="1" name="province" onChange={onChange} value={province} readOnly={!isEdit}/>
                             <input size="6"name="postalCode" onChange={onChange} value={postalCode} readOnly={!isEdit}/>
                         </Col>
                     </Form.Group>
@@ -91,10 +91,9 @@ export default function PersonCard(props) {
             </CardContainer.Body>
 
             {mode !== "add" && 
-            <div className="buttonContainer">
+            <div>
                 {isEdit && <Button  onClick={() => setIsEdit(false)} variant="primary"> Save </Button>}
                 {!isEdit && <Button  onClick={() => setIsEdit(true)} variant="primary"> Edit </Button>}
-                <Button  onClick={()=>{}} variant="secondary"> Delete </Button>
             </div>}
         </CardContainer>
     );

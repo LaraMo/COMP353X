@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import '../../scss/personCard.scss';
-import '../../scss/app.scss';
-import PersonCard from "../PersonCard";
+import PersonCard from "../components/PersonCard";
 import { Button, Modal } from "react-bootstrap";
+import CrudTitle from "../molecules/CrudTitle";
 
 function PersonCrud() {
   const [isAdd, setIsAdd] = useState(false)
@@ -10,22 +9,16 @@ function PersonCrud() {
     {id: "", first: "", last: "", dob: "", med: "", telephone: "", 
         address: "", provice: "",
     email: "" , isInfected: false, postalCode: ""});
-let {id, first, last, dob, med, telephone, address, province, email, isInfected, postalCode} = person;
   return (
     <div className="personCardContainer">
-      <div className="personCard-title">
-        <div>
-          <h1>Person 🧍</h1>
-          <p style={{color: 'gray'}}>Add, delete, edit and view people in our database</p>
-        </div>
-        <Button onClick={()=>setIsAdd(true)}>Add</Button>
-      </div>
-     
-      <hr/>
+      <CrudTitle
+        title="Person 🧍"
+        subTitle="Add, delete, edit and view people in our database"
+        addAction={()=>setIsAdd(true)}
+      />     
       {tempData.map((x, i) => {
         return <PersonCard mode="none" key={i} {...x}/>
       })}
-      
       <Modal show={isAdd} onHide={()=> setIsAdd(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Add New Person</Modal.Title>
@@ -38,11 +31,19 @@ let {id, first, last, dob, med, telephone, address, province, email, isInfected,
             Close
           </Button>
           <Button variant="primary" onClick={()=> setIsAdd(false)}>
-            Save Changes
+            Add           
           </Button>
         </Modal.Footer>
       </Modal>
     </div>
+      //   <Modal 
+      //   show={isAdd} 
+      //   title="Add New Person"
+      //   closeAction={()=> setIsAdd(false)}
+      //   addAction={()=> setIsAdd(false)}
+      //   >
+      //     <PersonCard {...person} mode="add"/>
+      // </Modal>
   );
 }
 

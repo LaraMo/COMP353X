@@ -20,7 +20,15 @@ input  {
     width: 100%;
     margin-bottom: 10px;
 }
-
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .form-group {
     align-items: baseline !important;
 }
+
+//import all other scss
+@import './home.scss';
+@import './personCard.scss';
