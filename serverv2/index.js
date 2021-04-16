@@ -88,7 +88,17 @@ app.get('/selectFacility', (req, res) => {
 
 /********************* Region /4 **********************/
 app.post('/addRegion', (req, res) => {
-   
+  console.log(req);
+  let = {region_name, alert_id} = req.body;
+  console.log(region_name, alert_id);
+  db.query("INSERT INTO Region(name, alert_id) VALUES (?, ?)",[region_name, alert_id], function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.send({success:false});
+    }
+    else {
+      res.send({success:true});}
+  });
 });
 
 app.post('/editRegion', (req, res) => {
