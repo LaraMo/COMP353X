@@ -1,6 +1,5 @@
 # Covid 19 Database
 
-Foobar is a Python library for dealing with word pluralization.
 
 ## How to run this locally?
 
