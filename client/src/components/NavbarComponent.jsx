@@ -32,10 +32,10 @@ export default function NavbarComponent() {
             <NavDropdown.Item href="/5">CRUD GroupZone</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Add Alert">
-            <NavDropdown.Item href="/7">7</NavDropdown.Item>
+            <NavDropdown.Item href="/7">Add Alert</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Follow up form">
-            <NavDropdown.Item href="/8">8</NavDropdown.Item>
+            <NavDropdown.Item href="/8">Follow Up Form</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Public Health Rec">
           <NavDropdown.Item href="/6">CRUD PHCR</NavDropdown.Item>
