@@ -1,70 +1,46 @@
 import React, { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import Login from "../components/Login";
+import FollowUpFormContainer from "../components/FollowUpFormContainer";
+import { ProgressBar, Step } from "react-step-progress-bar";
 import CrudTitle from "../molecules/CrudTitle";
+import "react-step-progress-bar/styles.css";
+import { Alert } from "react-bootstrap";
 
-function AddAlert() {
-  let [addAlert, setAddAlert] = useState({
+function FollowUpForm() {
+  let [followupForm, setFollowUpForm] = useState({
     level: "",
     color: "light",
     name: "",
     measures: "",
-    region:{}
+    region: {},
+    progress: 0,
   });
-  function onChange(e) {
-    let name = e.target.name;
-    console.log(name, e.target.value )
-    setAddAlert({ ...addAlert, [name]: e.target.value });
-  }
+
   return (
     <div className="crudContainer">
       <CrudTitle
-        title="Add Alert 🏥"
-        subTitle="Add an alert"
+        title="Follow up form 📝"
+        subTitle="follow up form with person"
       />
-      <Alert variant={addAlert.color}>
-      <Form>
-      <Form.Group controlId="exampleForm.ControlSelect1">
-          <Form.Label>Select Region</Form.Label>
-          <Form.Control onChange={onChange}  value={addAlert.region} as="select">
-            {regions.map((x, i) => {
-              return <option name="region" key={i} value={x.id}>{x.name}</option>
-            })}
-          </Form.Control>
-        </Form.Group>
-        <Form.Group controlId="exampleForm.ControlInput1">
-          <Form.Label>Level</Form.Label>
-          <Form.Control value={addAlert.level} name="level" onChange={onChange}type="text" placeholder="Warning, Danger..." />
-        </Form.Group>
-        <Form.Group controlId="exampleForm.ControlSelect1">
-          <Form.Label>Colors</Form.Label>
-          <Form.Control name="color" onChange={onChange} value={addAlert.color} as="select">
-            {colors.map((x, i) => {
-              return <option key={i} value={x}>{x}</option>
-            })}
-          </Form.Control>
-        </Form.Group>
-        <Form.Group controlId="exampleForm.ControlInput1">
-          <Form.Label>Name</Form.Label>
-          <Form.Control value={addAlert.name} name="name" onChange={onChange}type="text"/>
-        </Form.Group>
-        <Form.Group controlId="exampleForm.ControlInput1">
-          <Form.Label>Measures</Form.Label>
-          <Form.Control value={addAlert.measures} name="measures" onChange={onChange}type="text" />
-        </Form.Group>
-        <Button>Add</Button>
-      </Form>
-      </Alert>
+      <ProgressBar
+        percent={followupForm.progress}
+        filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+      >
+        <Step transition="scale">{({ accomplished }) => <div>🔓</div>}</Step>
+        <Step transition="scale">{({ accomplished }) => <div>✍🏻</div>}</Step>
+        <Step transition="scale">{({ accomplished }) => <div>✔️</div>}</Step>
+      </ProgressBar>
+      {followupForm.progress === 0 ? (
+        <Login
+          login={() => setFollowUpForm({ ...followupForm, progress: 50 })}
+        />
+      ) : followupForm.progress === 50 ? (
+        <FollowUpFormContainer onSubmit={() => setFollowUpForm({ ...followupForm, progress: 100 })}/>
+      ) : (
+        <Alert variant="sucessful">Submited</Alert>
+      )}
     </div>
   );
 }
 
-let regions = [{id:1, name:'reg1'}, {id:2, name:'reg2'}]
-let colors = ['primary',
-  'secondary',
-  'success',
-  'danger',
-  'warning',
-  'info',
-  'light',
-  'dark']
-export default AddAlert;
+export default FollowUpForm;
