@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Card as CardContainer,
-  Col,
-  Form,
-  Row,
-} from "react-bootstrap";
+import { Button, Card as CardContainer, Col, Form, Row } from "react-bootstrap";
 import { X } from "react-feather";
 
 export default function FacilityCard(props) {
@@ -15,15 +9,12 @@ export default function FacilityCard(props) {
     name: props.name,
     telephone: props.telephone,
     url: props.url,
-    type: props.type
+    type: props.type,
+    isDrive: props.isDrive,
+    numberHealthCareWorkers: props.numberHealthCareWorkers,
+    appointementType: props.appointementType,
   });
-  let {
-    id,
-    name,
-    telephone,
-    url,
-    type
-  } = facility;
+  let { id, name, telephone, url, type, isDrive, appointementType, numberHealthCareWorkers } = facility;
 
   let { mode } = props;
   function onChange(e) {
@@ -41,7 +32,7 @@ export default function FacilityCard(props) {
             readOnly={!isEdit}
           />
         </div>
-        {mode !== "add" && <X />}
+        {mode === "none" && <X />}
       </CardContainer.Header>
       <CardContainer.Body>
         <Form>
@@ -73,7 +64,37 @@ export default function FacilityCard(props) {
           </Form.Group>
           <Form.Group as={Row}>
             <Form.Label column sm="2">
-             Type
+              Type
+            </Form.Label>
+            <Col sm="10">
+              <input
+                name="appointementType"
+                onChange={onChange}
+                value={appointementType}
+                readOnly={!isEdit}
+              />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row}>
+            <Form.Label column sm="2">
+              Is drivethought
+            </Form.Label>
+            <Col sm="10">
+              {isEdit?
+                <input
+                type="checkbox"
+                readOnly={!isEdit}
+                onChange={onChange}
+                value={isDrive}
+              />
+              :
+              <div>{isDrive ==="checked" ? "yes":"no"}</div>
+              }
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row}>
+            <Form.Label column sm="2">
+              Type
             </Form.Label>
             <Col sm="10">
               <input
@@ -84,9 +105,23 @@ export default function FacilityCard(props) {
               />
             </Col>
           </Form.Group>
+          {mode === "detailed" &&
+          <Form.Group as={Row}>
+            <Form.Label column sm="2">
+              Number Health Care Workers
+            </Form.Label>
+            <Col sm="10">
+              <input
+                name="numberHealthCareWorkers"
+                value={numberHealthCareWorkers}
+                readOnly
+              />
+            </Col>
+          </Form.Group>
+          }
         </Form>
       </CardContainer.Body>
-      {mode !== "add" && (
+      {mode === "none" && (
         <div>
           {isEdit && (
             <Button onClick={() => setIsEdit(false)} variant="primary">

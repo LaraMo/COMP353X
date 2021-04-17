@@ -19,6 +19,7 @@ function PersonCrud(props) {
     startDate: "",
     endDate: "",
     schedual: "",
+    citizenship:"",
     email: "",
     isInfected: false,
     postalCode: "",
@@ -68,6 +69,7 @@ const tempData = [
     province: "QC",
     email: "Layla@gmail.com",
     isInfected: true,
+    citizenship:"Canadian",
     postalCode: "H38-WH2",
   },
   {
@@ -81,6 +83,7 @@ const tempData = [
     province: "QC",
     email: "Layla@gmail.com",
     isInfected: false,
+    citizenship:"Canadian",
     postalCode: "H38-WH2",
   },
   {
@@ -92,6 +95,7 @@ const tempData = [
     telephone: "439-435-222",
     address: "Maple Street 35",
     province: "QC",
+    citizenship:"Canadian",
     email: "Layla@gmail.com",
     isInfected: false,
     isPhw: true,

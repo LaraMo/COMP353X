@@ -10,23 +10,23 @@ export default function NavbarComponent() {
         <Nav className="mr-auto">
           <NavDropdown title="Person">
             <NavDropdown.Item href="/1">CRUD Person</NavDropdown.Item>
-            <NavDropdown.Item href="/9">9</NavDropdown.Item>
-            <NavDropdown.Item href="/11">11</NavDropdown.Item>
-            <NavDropdown.Item href="/14">14</NavDropdown.Item>
+            <NavDropdown.Item href="/9">TODO9??</NavDropdown.Item>
+            <NavDropdown.Item href="/11">People By Address</NavDropdown.Item>
+            <NavDropdown.Item href="/14">TODO14??</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Public Health Worker">
             <NavDropdown.Item href="/2">Public Health Worker</NavDropdown.Item>
-            <NavDropdown.Item href="/16">16</NavDropdown.Item>
+            <NavDropdown.Item href="/16">TODO16</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Facility">
             <NavDropdown.Item href="/3">CRUD Facility</NavDropdown.Item>
-            <NavDropdown.Item href="/12">12</NavDropdown.Item>
-            <NavDropdown.Item href="/15">15</NavDropdown.Item>
+            <NavDropdown.Item href="/12">DETAILED Facility</NavDropdown.Item>
+            <NavDropdown.Item href="/15">TODO15</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Region">
             <NavDropdown.Item href="/4">CRUD Region</NavDropdown.Item>
-            <NavDropdown.Item href="/13">13</NavDropdown.Item>
-            <NavDropdown.Item href="/17">17</NavDropdown.Item>
+            <NavDropdown.Item href="/13">TODO13</NavDropdown.Item>
+            <NavDropdown.Item href="/17">TODO17</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="GroupZone">
             <NavDropdown.Item href="/5">CRUD GroupZone</NavDropdown.Item>
@@ -39,7 +39,7 @@ export default function NavbarComponent() {
           </NavDropdown>
           <NavDropdown title="Public Health Rec">
           <NavDropdown.Item href="/6">CRUD PHCR</NavDropdown.Item>
-            <NavDropdown.Item href="/10">10</NavDropdown.Item>
+            <NavDropdown.Item href="/10">Messages</NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Navbar.Collapse>
