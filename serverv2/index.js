@@ -38,36 +38,15 @@ mysqlssh.connect(
 
 /********************* PERSON /1 **********************/
 app.post('/addPerson', (req, res) => {
-  let {postal_code, city_id, first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, citizenship} = req.body;
-  db.query("SELECT id FROM PostalCode WHERE postal_code = ?", [postal_code], (errr, ress) => {
-    if(errr) {
-      console.log(errr)
-      res.send({success:false});
-    } else {
-        let postal_code_id;
-        if (ress.length==0) {
-            db.query("INSERT INTO PostalCode(postal_code, city_id) VALUES(?, ?);",[postal_code, city_id, ], function (error, results) {
-                if (error) {
-                    console.log(error)
-                    res.send({success:false});
-                } 
-                else {
-                    postal_code_id = results.insertId;
-                    db.query("INSERT INTO Person(first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code, citizenship) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", 
-                    [first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code_id, citizenship], (err, resul)  => {
-                        if(err) {
-                            console.log(err)
-                            res.send({success:false});
-                        } else {
-                            res.send({success:true});
-                        }
-                    })
-                }
-            });
-        } else {
-            postal_code_id = ress[0].id;
+    let {postal_code, city_id, first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, citizenship} = req.body;
+    db.query("INSERT INTO PostalCode(postal_code, city_id) VALUES(?, ?);",[postal_code, city_id, ], function (error, results) {
+        if (error) {
+            console.log(error)
+            res.send({success:false});
+        } 
+        else {
             db.query("INSERT INTO Person(first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code, citizenship) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", 
-            [first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code_id, citizenship], (err, resul)  => {
+            [first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, results.insertId, citizenship], (err, resul)  => {
                 if(err) {
                     console.log(err)
                     res.send({success:false});
@@ -76,19 +55,26 @@ app.post('/addPerson', (req, res) => {
                 }
             })
         }
-   }
-  })
+    });
 });
 
 app.post('/editPerson', (req, res) => {
-  let {first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code, citizenship} = req.body;
-  db.query("Update Person Set first_name = ?, last_name = ?, date_of_birth = ?, medicare_number = ?, telephone_number = ?, address = ?, province = ?, email_address = ?, is_infected = ?, postal_code = ? WHERE id = ?;",[first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, results.insertId, citizenship], function (error, results, fields) {
+  let {id, first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code, city_id, postal_code_id, citizenship} = req.body;
+  db.query("Update Person Set first_name = ?, last_name = ?, date_of_birth = ?, medicare_number = ?, telephone_number = ?, address = ?, province = ?, email_address = ?, is_infected = ?, postal_code = ?, citizenship = ? WHERE id = ?;",
+    [first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code_id, citizenship, id], function (error, results, fields) {
     if (error) {
       console.log(error)
       res.send({success:false});
     }
     else {
-      res.send({success:true});}
+        db.query("UPDATE PostalCode SET postal_code =  ?, city_id = ? WHERE id = ?", [postal_code, city_id, postal_code_id], (err) => {
+            if(err) {
+                res.send({success:false});
+            } else {
+                res.send({success:true});           
+            }
+        })
+    }
   });
 });
 
