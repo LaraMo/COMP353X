@@ -39,35 +39,43 @@ mysqlssh.connect(
 /********************* PERSON /1 **********************/
 app.post('/addPerson', (req, res) => {
   let {postal_code, city_id, first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, citizenship} = req.body;
-  db.query("SELECT id FROM PostalCode WHERE postal_code = ?", [postal_code], (errr, ress, fiell) => {
+  db.query("SELECT id FROM PostalCode WHERE postal_code = ?", [postal_code], (errr, ress) => {
     if(errr) {
       console.log(errr)
       res.send({success:false});
-   } else {
-      let postal_code_id = -1;
-       res.send({success:true});
-       if (ress.length==0){
-        db.query("INSERT INTO PostalCode(postal_code, city_id) VALUES(?, ?);",[postal_code, city_id, ], function (error, results, fields) {
-          if (error) {
-            console.log(error)
-            res.send({success:false});
-          } 
-          else {
-            postal_code_id = results.insertId;
-              }
-        });
-       } else {
-         postal_code_id = results[0].id;
-       }
-       db.query("INSERT INTO Person(first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code, citizenship) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, last_insert_id(), ?);", 
-              [first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code_id, citizenship], (err, resul, fiel)  => {
-                 if(err) {
+    } else {
+        let postal_code_id;
+        if (ress.length==0) {
+            db.query("INSERT INTO PostalCode(postal_code, city_id) VALUES(?, ?);",[postal_code, city_id, ], function (error, results) {
+                if (error) {
+                    console.log(error)
+                    res.send({success:false});
+                } 
+                else {
+                    postal_code_id = results.insertId;
+                    db.query("INSERT INTO Person(first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code, citizenship) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", 
+                    [first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code_id, citizenship], (err, resul)  => {
+                        if(err) {
+                            console.log(err)
+                            res.send({success:false});
+                        } else {
+                            res.send({success:true});
+                        }
+                    })
+                }
+            });
+        } else {
+            postal_code_id = ress[0].id;
+            db.query("INSERT INTO Person(first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code, citizenship) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", 
+            [first_name, last_name, date_of_birth, medicare_number, telephone_number, address, province, email_address, is_infected, postal_code_id, citizenship], (err, resul)  => {
+                if(err) {
                     console.log(err)
                     res.send({success:false});
-                 } else {
-                     res.send({success:true});
-                 }
-              })
+                } else {
+                    res.send({success:true});
+                }
+            })
+        }
    }
   })
 });
