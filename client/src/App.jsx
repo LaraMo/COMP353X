@@ -7,11 +7,11 @@ import PersonCrud from './pages/PersonCrud.jsx';
 import FacilityCrud from './pages/FacilityCrud.jsx';
 import RegionCrud from './pages/RegionCrud.jsx';
 import GroupZoneCrud from './pages/GroupZoneCrud.jsx';
-
-import './scss/app.scss';
+import FollowUpForm from './pages/FollowUpForm.jsx';
 import PublicHealthCareRecsCrud from './pages/PublicHealthCareRecsCrud.jsx';
 import AddAlert from './pages/AddAlert.jsx';
-import FollowUpForm from './pages/AddAlert.jsx';
+import './scss/app.scss';
+
 
 export default function App(){
     return (
