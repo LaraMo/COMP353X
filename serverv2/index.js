@@ -552,6 +552,18 @@ app.get('/query09', (req, res) => {
   });
 })
 
+app.get('/infectedPeople', (req, res) => {
+  db.query("SELECT p.id, p.first_name, p.last_name FROM Person p JOIN Diagnostic diag on diag.person_id = p.id where diag.is_infected = true;", function(error, results, fields){
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true, data: [...results] });
+    }
+  });
+})
+
 /********************* /10 **********************/
 
 app.get('/query10', (req, res) => {
