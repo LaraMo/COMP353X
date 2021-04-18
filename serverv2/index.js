@@ -542,7 +542,7 @@ app.post('/followUpForm', (req, res) => {
 /********************* /9 **********************/
 app.get('/datePeopleSymptoms', (req, res) => {
     let {date, id} = req.query;
-    db.query("SELECT  p.first_name, p.last_name, group_concat(s.symptom) as 'Common Symptom', group_concat(ds.other) as 'Other Symptoms' FROM DiagnosticSymptoms as ds INNER JOIN Diagnostic as d ON ds.Diagnostic_id = d.id INNER JOIN Person as p ON d.person_id = p.id INNER JOIN Symptom as s ON ds.Symptom_id = s.id WHERE p.id = ? AND ds.date = ? GROUP BY p.first_name;", [id, date], function(error, results, fields){
+    db.query("SELECT  p.first_name, p.last_name, group_concat(s.symptom) as 'Common Symptom', group_concat(ds.other) as 'Other Symptoms' FROM DiagnosticSymptoms as ds INNER JOIN Diagnostic as d ON ds.Diagnostic_id = d.id INNER JOIN Person as p ON d.person_id = p.id INNER JOIN Symptom as s ON ds.Symptom_id = s.id WHERE p.id = ? AND d.date_taken = ? GROUP BY p.first_name;", [id, date], function(error, results, fields){
         if (error) {
             console.log(error)
             res.send({ success: false });
@@ -554,7 +554,7 @@ app.get('/datePeopleSymptoms', (req, res) => {
 })
 
 app.get('/infectedPeople', (req, res) => {
-  db.query("SELECT p.id, p.first_name, p.last_name FROM Person p JOIN Diagnostic diag on diag.person_id = p.id where diag.is_infected = true;", function(error, results, fields){
+  db.query("SELECT p.id, p.first_name, p.last_name FROM Person p JOIN Diagnostic diag on diag.person_id = p.id WHERE diag.is_infected = true;", function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
