@@ -468,7 +468,34 @@ app.post('/addAlert', (req, res) => {
 
 /********************* FollowUpForm /8 **********************/
 app.post('/followUpForm', (req, res) => {
+    let {symptoms, temperature} = req.body;
+    
+    //get the Diagnostic id for the person
 
+    if (symptoms && symptoms.length > 0) {
+        let symptom_query = "INSERT INTO DiagnosticSymptoms (Diagnostic_id, Symptom_id, date, temperature, other) VALUES " + substeps.map(step => "(?, ?, now(), ?) ");
+        symptom_query = symptom_query.substring(0, symptom_query.length - 1);
+        let symptom_params = [];
+        symptoms.forEach(symptom => {
+            symptom_params.push(diag_id, symptom, temperature, null);
+        });
+        if(other) {
+            symptom_params.push(diag_id, 0, temperature, other);
+        }
+        db.query(symptom_query, symptom_params, (err, resul) => {
+          if (err) {
+            console.log(err);
+            res.send({ success: false });
+          }
+          else {
+            res.send({ success: true });
+          }
+        })
+      }
+      else {
+        res.send({ success: true })
+      }
+      
 });
 
 
