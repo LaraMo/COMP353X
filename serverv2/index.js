@@ -419,7 +419,44 @@ app.post('/addPHRecs', (req, res) => {
 });
 
 app.post('/editPHRecs', (req, res) => {
-
+  let { id, reccomendation_text, substeps } = req.body;
+  db.query("UPDATE Reccomendation SET reccomendation = ? WHERE id = ?", [reccomendation_text, id], function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      db.query("DELETE FROM SubSteps WHERE reccomendation_id = ?", [id], function (error, results, fields) {
+        if (error) {
+          console.log(error)
+          res.send({ success: false });
+        }
+        else {
+          if (substeps && substeps.length > 0) {
+            let substep_query = "INSERT INTO SubSteps(step, reccomendation_id) VALUES " + substeps.map(step => "(?,?) ");
+            substep_query = substep_query.substring(0, substep_query.length - 1);
+            let substep_params = [];
+            substeps.forEach(step => {
+              substep_params.push(step, id);
+            });
+            db.query(substep_query, substep_params, (err, resul) => {
+              if (err) {
+                console.log(err);
+                res.send({ success: false });
+              }
+              else {
+                res.send({ success: true });
+              }
+            })
+          }
+          else {
+            res.send({ success: true })
+          }
+        }
+      });
+    }
+  });
+  
 });
 
 app.post('/deletePHRecs', (req, res) => {
