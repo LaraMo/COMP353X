@@ -541,7 +541,7 @@ app.post('/followUpForm', (req, res) => {
 
 /********************* /10 **********************/
 
-app.get('/query10', (req, res) => {
+app.get('/showMessages', (req, res) => {
   let {start_date, end_date} = req.query;
   db.query("SELECT message FROM Messages m WHERE m.time BETWEEN ? AND ?;", [start_date, end_date], function(error, results, fields){
     if (error) {
