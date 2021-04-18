@@ -665,13 +665,17 @@ app.get('/query17', (req, res) => {
 /********************* Helper method: Check if loggedin ****************************/
 app.post('/isLoggedIn', (req, res) => {
   let {medicare_number, date_of_birth} = req.body;
-  db.query("SELECT p.medicare_number, p.date_of_birth, p.id FROM Person p WHERE p.medicare_number = ?", [medicare_number],function (error, results, fields) {
+  db.query("SELECT p.id, p.medicare_number, p.date_of_birth FROM Person p JOIN Diagnostic diag on diag.person_id = p.id WHERE p.medicare_number = ? AND diag.is_infected = true;", [medicare_number],function (error, results, fields) {
     if (error) {
       console.log(error)
       res.send({ success: false });
     }
     else {
-      res.send({ success: new Date(results[0].date_of_birth).toISOString().slice(0, 10) == new Date(date_of_birth).toISOString().slice(0, 10)});
+        if(results.length > 0 && new Date(results[0].date_of_birth).toISOString().slice(0, 10) == new Date(date_of_birth).toISOString().slice(0, 10)) {
+            res.send({ success: true, id: results[0].id});
+        } else {
+            res.send({ success: false });
+        }
     }
   });
 });
