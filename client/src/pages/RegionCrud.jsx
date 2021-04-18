@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import RegionCard from "../components/RegionCard";
 import { Button, Modal } from "react-bootstrap";
 import CrudTitle from "../molecules/CrudTitle";
-import { alerts } from "../data/alert";
 
 function RegionCrud() {
   const [isAdd, setIsAdd] = useState(false);

@@ -10,7 +10,7 @@ export default function NavbarComponent() {
         <Nav className="mr-auto">
           <NavDropdown title="Person">
             <NavDropdown.Item href="/1">CRUD Person</NavDropdown.Item>
-            <NavDropdown.Item href="/9">TODO9??</NavDropdown.Item>
+            <NavDropdown.Item href="/9">Date People Symptoms</NavDropdown.Item>
             <NavDropdown.Item href="/11">People By Address</NavDropdown.Item>
             <NavDropdown.Item href="/14">TODO14??</NavDropdown.Item>
           </NavDropdown>

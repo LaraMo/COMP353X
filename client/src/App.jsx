@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Navbar from "./components/NavbarComponent";
-import { home,crudPerson,crudHealthWorker, detailedFacility, peopleByAddress, showMessages, crudFacility, followUpForm, crudRegion, crudGroupZone, crudPHCR, addAlert  } from './data/routes.js';
+import { home,crudPerson,crudHealthWorker, detailedFacility, peopleByAddress, showMessages, crudFacility, followUpForm, crudRegion, crudGroupZone, crudPHCR, addAlert, datePeopleSymptoms  } from './data/routes.js';
 import PersonCrud from './pages/PersonCrud.jsx';
 import FacilityCrud from './pages/FacilityCrud.jsx';
 import RegionCrud from './pages/RegionCrud.jsx';
@@ -15,6 +15,7 @@ import ShowMessages from './pages/ShowMessages.jsx';
 import PeopleByAddress from './pages/PeopleByAddress.jsx';
 import DetailedFacility from './pages/DetailedFacility.jsx';
 import './scss/app.scss';
+import DatePeopleSymptoms from './pages/DatePeopleSymptoms.jsx';
 
 export default function App(){
     return (
@@ -32,7 +33,9 @@ export default function App(){
               <Route path={followUpForm} component={FollowUpForm} />  
               <Route path={showMessages} component={ShowMessages} />
               <Route path={peopleByAddress} component={PeopleByAddress} />  
-              <Route path={detailedFacility} component={DetailedFacility} />  
+              <Route path={detailedFacility} component={DetailedFacility} /> 
+              <Route path={datePeopleSymptoms} component={DatePeopleSymptoms} /> 
+               
           </Switch>
     </Router>
     );

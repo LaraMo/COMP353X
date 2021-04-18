@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import DateTimePicker from 'react-datetime-picker';
-import { Alert, Col, Form, Row } from "react-bootstrap";
+import { Alert, Col, Form } from "react-bootstrap";
 import CrudTitle from "../molecules/CrudTitle";
 import moment from 'moment';
 moment().format();
-function ShowMessages() {
+function DatePeopleSymptoms() {
 
 const [startDate, setStartDate] = useState();
 const [endDate, setEndDate] = useState();
@@ -64,4 +64,4 @@ useEffect(() => {
 }
 
 
-export default ShowMessages;
+export default DatePeopleSymptoms;
