@@ -465,33 +465,41 @@ app.post('/addAlert', (req, res) => {
 
 /********************* FollowUpForm /8 **********************/
 app.post('/followUpForm', (req, res) => {
-    let {symptoms, temperature} = req.body;
-    
-    //get the Diagnostic id for the person
-
-    if (symptoms && symptoms.length > 0) {
-        let symptom_query = "INSERT INTO DiagnosticSymptoms (Diagnostic_id, Symptom_id, date, temperature, other) VALUES " + substeps.map(step => "(?, ?, now(), ?) ");
-        symptom_query = symptom_query.substring(0, symptom_query.length - 1);
-        let symptom_params = [];
-        symptoms.forEach(symptom => {
-            symptom_params.push(diag_id, symptom, temperature, null);
-        });
-        if(other) {
-            symptom_params.push(diag_id, 0, temperature, other);
-        }
-        db.query(symptom_query, symptom_params, (err, resul) => {
-          if (err) {
-            console.log(err);
-            res.send({ success: false });
-          }
-          else {
-            res.send({ success: true });
-          }
-        })
+    let {symptoms, temperature, id, other} = req.body;
+    db.query("SELECT id, person_id from Diagnostic diag WHERE date_taken = (SELECT max(date_taken) FROM Diagnostic WHERE id = diag.id) AND person_id = ?", [id], function (error, results, fields) {
+      if (error) {
+        console.log(error)
+        res.send({ success: false });
       }
       else {
-        res.send({ success: true })
+        if (symptoms && symptoms.length > 0) {
+          let symptom_query = "INSERT INTO DiagnosticSymptoms (Diagnostic_id, Symptom_id, date, temperature, other) VALUES " + symptoms.map(step => "(?, ?, now(), ?, ?) ");
+          symptom_query = symptom_query.substring(0, symptom_query.length - 1);
+          symptom_query += (other? ", (?, ?, now(), ?, ?) " : "");
+          console.log(symptom_query)
+          let symptom_params = [];
+          symptoms.forEach(symptom => {
+              symptom_params.push(results[0].id, symptom, temperature, null);
+          });
+          if(other) {
+              symptom_params.push(results[0].id, 12, temperature, other);
+          }
+          db.query(symptom_query, symptom_params, (err, resul) => {
+            if (err) {
+              console.log(err);
+              res.send({ success: false });
+            }
+            else {
+              res.send({ success: true });
+            }
+          })
+        }
+        else {
+          res.send({ success: true })
+        }
       }
+    })
+   
       
 });
 
@@ -537,11 +545,6 @@ app.get('/selectCity', (req, res) =>{
     }
   })
 })
-
-
-
-
-
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
