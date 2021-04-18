@@ -190,24 +190,17 @@ app.post('/editPhcw', (req, res) => {
 });
 
 app.post('/deletePhcw', (req, res) => {
-  let { id} = req.body;
+  let {id} = req.body;
   db.query("DELETE FROM PublicHealthWorker WHERE id = ?;", [id], function (error, results) {
     if (error) {
       console.log(error)
       res.send({ success: false });
     }
     else {
-      db.query("DELETE FROM PostalCode WHERE id = ?;", [postal_code_id], (err, resul) => {
-        if (err) {
-          console.log(err)
-          res.send({ success: false });
-        } else {
-          res.send({ success: true });
-        }
-      })
-    }
+        res.send({ success: true });
+      }
+    })
   });
-});
 
 app.get('/selectPhcw', (req, res) => {
   db.query("SELECT phw_id, phc_id, start_date, end_date, schedule FROM PublicHealthCenterWorkers", function (error, results, fields) {
@@ -327,7 +320,18 @@ app.get('/selectRegion', (req, res) => {
   });
 });
 
-
+app.get('/selectRegionName', (req, res) => {
+  let { id } = req.body;
+  db.query("SELECT id, name FROM Region WHERE id = ?;", [id], function(error, results, fields){
+    if(error){
+      console.log(error)
+      res.send({success: false});
+    }
+    else{
+      res.send({success: true, data: [...results]})
+    }
+  })
+})
 
 /********************* GroupZone /5 **********************/
 app.post('/addGz', (req, res) => {
@@ -434,7 +438,19 @@ app.get('/selectPHRecs', (req, res) => {
   });
 });
 
-
+/********************* Cities ****************************/
+app.get('/selectCity', (req, res) =>{
+  let { region_id } = req.body;
+  db.query("SELECT * FROM City WHERE region_id = ?;", [region_id], function(error, results, fields){
+    if(error){
+      console.log(error)
+      res.send({success: false});
+    }
+    else{
+      res.send({success: true, data: [...results]})
+    }
+  })
+})
 /********************* AddAlert /7 **********************/
 app.post('/addAlert', (req, res) => {
 
