@@ -321,8 +321,7 @@ app.get('/selectRegion', (req, res) => {
 });
 
 app.get('/selectRegionName', (req, res) => {
-  let { id } = req.body;
-  db.query("SELECT id, name FROM Region WHERE id = ?;", [id], function(error, results, fields){
+  db.query("SELECT id, name FROM Region;", function(error, results, fields){
     if(error){
       console.log(error)
       res.send({success: false});
@@ -540,6 +539,21 @@ app.post('/followUpForm', (req, res) => {
       
 });
 
+/********************* /10 **********************/
+
+app.get('/query10', (req, res) => {
+  let {start_date, end_date} = req.query;
+  db.query("SELECT message FROM Messages m WHERE m.time BETWEEN ? AND ?;", [start_date, end_date], function(error, results, fields){
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true, data: [...results] });
+    }
+  });
+})
+
 
 
 /********************* Helper method: Check if loggedin ****************************/
@@ -576,6 +590,7 @@ app.get('/selectSymptomes', (req, res) =>{
 
 /********************* Helper method: Select all Cities ****************************/
 app.get('/selectCity', (req, res) =>{
+  let {region_id} = req.query
   db.query("SELECT * FROM City", [], function(error, results, fields){
     if(error){
       console.log(error)
