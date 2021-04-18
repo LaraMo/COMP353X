@@ -447,22 +447,19 @@ app.get('/selectPHRecs', (req, res) => {
   });
 });
 
-/********************* Cities ****************************/
-app.get('/selectCity', (req, res) =>{
-  let { region_id } = req.body;
-  db.query("SELECT * FROM City WHERE region_id = ?;", [region_id], function(error, results, fields){
-    if(error){
-      console.log(error)
-      res.send({success: false});
-    }
-    else{
-      res.send({success: true, data: [...results]})
-    }
-  })
-})
+
 /********************* AddAlert /7 **********************/
 app.post('/addAlert', (req, res) => {
-
+  let { message, region } = req.body;
+  db.query("INSERT INTO Messages(date, time, message, region_id) VALUES(now(),now(),?,?)", [message, region.value], function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true });
+    }
+  });
 });
 
 
@@ -499,6 +496,47 @@ app.post('/followUpForm', (req, res) => {
 });
 
 
+
+/********************* Helper method: Check if loggedin ****************************/
+app.post('/isLoggedIn', (req, res) => {
+  let {medicare_number, date_of_birth} = req.body;
+  db.query("SELECT p.medicare_number, p.date_of_birth, p.id FROM Person p WHERE p.medicare_number = ?", [medicare_number],function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: new Date(results[0].date_of_birth).toISOString().slice(0, 10) == new Date(date_of_birth).toISOString().slice(0, 10)});
+    }
+  });
+});
+
+/********************* Helper method: Check if loggedin ****************************/
+app.get('/selectSymptomes', (req, res) =>{
+  db.query("SELECT id, symptom FROM Symptom", [], function(error, results, fields){
+    if(error){
+      console.log(error)
+      res.send({success: false});
+    }
+    else{
+      res.send({success: true, data: [...results]})
+    }
+  })
+})
+
+
+/********************* Helper method: Select all Cities ****************************/
+app.get('/selectCity', (req, res) =>{
+  db.query("SELECT * FROM City", [], function(error, results, fields){
+    if(error){
+      console.log(error)
+      res.send({success: false});
+    }
+    else{
+      res.send({success: true, data: [...results]})
+    }
+  })
+})
 
 
 
