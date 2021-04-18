@@ -539,6 +539,19 @@ app.post('/followUpForm', (req, res) => {
       
 });
 
+/********************* /9 **********************/
+app.get('/query09', (req, res) => {
+  db.query("SELECT  p.first_name, p.last_name, group_concat(s.symptom) as 'Main Symptom', group_concat(ds.other) as 'Other Symptoms' FROM DiagnosticSymptoms as ds INNER JOIN Diagnostic as d ON ds.Diagnostic_id = d.id INNER JOIN Person as p ON d.person_id = p.id INNER JOIN Symptom as s ON ds.Symptom_id = s.id GROUP BY p.first_name;", function(error, results, fields){
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true, data: [...results] });
+    }
+  });
+})
+
 /********************* /10 **********************/
 
 app.get('/query10', (req, res) => {
@@ -554,7 +567,100 @@ app.get('/query10', (req, res) => {
   });
 })
 
+/********************** /11 *******************/
+app.get('/query11', (req, res) => {
+  let {address} = req.query;
+  db.query("SELECT p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.citizenship, p.email_address, p.parent1_id, p.parent2_id FROM Person p WHERE p.address = ?;", [address], function(error, results, fields){
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true, data: [...results] });
+    }
+  });
+})
 
+/********************** /12 *******************/
+app.get('/query12', (req, res) => {
+  db.query("SELECT phc.id, phc.address, SUM(phcw.phw_id) as number_of_workers, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough FROM PublicHealthCenter phc JOIN PublicHealthCenterWorkers phcw on phcw.phc_id = phc.id GROUP BY phc.id, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough;", function(error, results, fields){
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true, data: [...results] });
+    }
+  });
+})
+
+/********************** /13 *******************/
+app.get('/query13', (req, res) => {
+  db.query("SELECT  distinct r.id, r.name as 'Region Name', group_concat(Distinct c.name) as Cities, group_concat( distinct pc.postal_code) as 'Postal Codes' FROM Region as r JOIN City c ON r.id = c.region_id JOIN PostalCode pc ON c.id = pc.city_id GROUP BY r.id, r.name;", function(error, results, fields){
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true, data: [...results] });
+    }
+  });
+})
+
+/********************** /14 *******************/
+app.get('/query14', (req, res) => {
+  let {date} = req.query;
+  db.query("SELECT Person.first_name, Person.last_name, Person.date_of_birth, Person.telephone_number, Person.email_address, Diagnostic.is_infected FROM Person INNER JOIN Diagnostic ON Person.id = Diagnostic.person_id WHERE Diagnostic.date_taken = ? ORDER BY Diagnostic.is_infected DESC;", [date], function(error, results, fields){
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true, data: [...results] });
+    }
+  });
+})
+
+/********************** /15 *******************/
+app.get('/query15', (req, res) => {
+  let {id} = req.query;
+  db.query("SELECT Person.first_name, Person.last_name FROM Person INNER JOIN PublicHealthWorker ON Person.id = PublicHealthWorker.person_id INNER JOIN PublicHealthCenterWorkers ON PublicHealthWorker.id = PublicHealthCenterWorkers.phw_id WHERE PublicHealthCenterWorkers.phc_id = ?;", [id], function(error, results, fields){
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true, data: [...results] });
+    }
+  });
+})
+
+/********************** /16 *******************/
+app.get('/query16', (req, res) => {
+  let {date} = req.query;
+  db.query("SELECT phcw.phc_id, infected.id as infected_id, infected.first_name, infected.last_name, (SELECT group_concat(CONCAT(souls.first_name, ' ', souls.last_name)) FROM Person souls JOIN PublicHealthWorker sphw on sphw.person_id = souls.id JOIN PublicHealthCenterWorkers sphcw on sphcw.phw_id = sphw.id  WHERE sphcw.phc_id = phcw.phc_id AND sphcw.schedule = phcw.schedule AND (diag.date_resolved - sphcw.start_date) >= 14) from Person infected  JOIN PublicHealthWorker worker on worker.person_id = infected.id JOIN Diagnostic diag on diag.person_id = infected.id JOIN PublicHealthCenter phc on diag.phc_id = phc.id JOIN PublicHealthCenterWorkers phcw on phcw.phw_id = worker.id WHERE diag.is_infected = true AND diag.date_taken = ?;", [date], function(error, results, fields){
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true, data: [...results] });
+    }
+  });
+})
+
+/********************** /17 *******************/
+app.get('/query17', (req, res) => {
+  db.query("SELECT r.id as regID, r.name as regName, count(infected.id) as infected, count(healthy.id) as healthy, group_concat(distinct m.message) AS allmessages From Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id LEFT JOIN Person infected on (pc.id = infected.postal_code AND infected.is_infected = true) LEFT JOIN Person healthy on (pc.id = healthy.postal_code AND healthy.is_infected = false) LEFT JOIN Messages m ON r.id = m.region_id GROUP by r.id, r.name", function(error, results, fields){
+    if (error) {
+      console.log(error)
+      res.send({ success: false });
+    }
+    else {
+      res.send({ success: true, data: [...results] });
+    }
+  });
+})
 
 /********************* Helper method: Check if loggedin ****************************/
 app.post('/isLoggedIn', (req, res) => {
