@@ -237,8 +237,8 @@ app.post('/addFacility', (req, res) => {
 });
 
 app.post('/editFacility', (req, res) => {
-  let { name, phone_number, web_address, type, has_drivethrough, appointment_type, id } = req.body;
-  db.query("UPDATE PublicHealthCenter SET name = ?, phone_number = ?, web_address = ?, type = ?, appointment_type = ?, has_drivethrough = ?, appointment_type = ? WHERE id = ?;", [name, phone_number, web_address, type, appointment_type, has_drivethrough, appointment_type, id], function (error, results, fields) {
+  let { name, phone_number, web_address, type, has_drivethrough, appointment_type, address, id } = req.body;
+  db.query("UPDATE PublicHealthCenter SET name = ?, phone_number = ?, web_address = ?, type = ?, appointment_type = ?, has_drivethrough = ?, appointment_type = ?, address = ? WHERE id = ?;", [name, phone_number, web_address, type, appointment_type, has_drivethrough, appointment_type, address, id], function (error, results, fields) {
     if (error) {
       console.log(error)
       res.send({ success: false });
@@ -263,7 +263,7 @@ app.post('/deleteFacility', (req, res) => {
 });
 
 app.get('/selectFacility', (req, res) => {
-  db.query("SELECT id, name, phone_number, web_address, type, has_drivethrough, appointment_type FROM PublicHealthCenter;", function (error, results, fields) {
+  db.query("SELECT id, name, phone_number, web_address, type, has_drivethrough, appointment_type, address FROM PublicHealthCenter;", function (error, results, fields) {
     if (error) {
       console.log(error)
       res.send({ success: false });
