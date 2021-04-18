@@ -110,7 +110,7 @@ app.post('/deletePerson', (req, res) => {
 });
 
 app.get('/selectPerson', (req, res) => {
-  db.query("SELECT p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.address, p.province, p.email_address, p.is_infected, pc.postal_code, p.citizenship, city.name, city.id as city_id, pc.id as postal_code_id FROM Person p JOIN PostalCode pc on pc.id = p.postal_code JOIN City city on city.id = pc.city_id JOIN Region r ON r.id=city.region_id;", function (error, results, fields) {
+  db.query("SELECT p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.address, p.province, p.email_address, p.is_infected, pc.postal_code, p.citizenship, city.name, city.id as city_id, pc.id as postal_code_id FROM Person p JOIN PostalCode pc on pc.id = p.postal_code JOIN City city on city.id = pc.city_id JOIN Region r ON r.id=city.region_id ORDER BY p.id ASC;", function (error, results, fields) {
     if (error) {
       console.log(error)
       res.send({ success: false });
