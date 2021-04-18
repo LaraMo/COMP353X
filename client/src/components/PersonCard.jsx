@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
 import {
   Alert,
   Button,
@@ -10,77 +12,127 @@ import {
 import { Briefcase, Calendar, Frown, Home, Mail, Phone, Smile, X } from "react-feather";
 
 export default function PersonCard(props) {
+  let [listOfCities, setListOfCities] = useState([]);
   let [isEdit, setIsEdit] = useState(props.mode === "add");
   let [person, setPerson] = useState({
     id: props.id,
-    first: props.first,
-    last: props.last,
-    dob: props.dob,
-    med: props.med,
+    first_name: props.first_name,
+    last_name: props.last_name,
+    date_of_birth: props.date_of_birth,
+    medicare_number: props.medicare_number,
     citizenship: props.citizenship,
-    telephone: props.telephone,
+    telephone_number: props.telephone_number,
     address: props.address,
     province: props.province,
-    email: props.email,
-    isInfected: props.isInfected,
-    postalCode: props.postalCode,
+    city_name: props.name,
+    email_address: props.email_address,
+    is_infected: props.is_infected,
+    postal_code: props.postal_code,
+    postal_code_id: props.postal_code,
     isPhw: props.isPhw,
     startDate: props.startDate,
     endDate: props.endDate,
     schedual: props.schedual,
     facility: props.facility,
     mother: props.mother,
-    father: props.father
+    father: props.father,
+    city_id: props.city_id
   });
   let {
     id,
-    first,
-    last,
-    dob,
-    med,
-    telephone,
+    first_name,
+    last_name,
+    date_of_birth,
+    medicare_number,
+    telephone_number,
     address,
     province,
     citizenship,
-    email,
-    isInfected,
-    postalCode,
+    email_address,
+    is_infected,
+    postal_code,
     isPhw,
     startDate,
     endDate,
     schedual,
     facility,
     mother,
-    father, 
+    father,
+    city_id,
+    city_name, 
+    postal_code_id
   } = person;
   let { mode } = props;
+  
   function onChange(e) {
     let name = e.target.name;
     setPerson({ ...person, [name]: e.target.value });
   }
+
+  useEffect(() => {
+    fetch('http://localhost:3001/selectCity')
+    .then(response => response.json())
+    .then(data => setListOfCities(data.data.map(x => {
+      return {value: x.id, label: x.name}
+    })
+  ))})
+  function editPerson() {
+    fetch("http://localhost:3001/editPerson", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({...person, date_of_birth: new Date().toISOString().slice(0, 10)}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function deletePerson() {
+    fetch("http://localhost:3001/deletePerson", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ person_id: id, postal_code_id: postal_code_id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
   return (
     <CardContainer className="mb-10">
       <CardContainer.Header className="title">
         <div>
           Card#
           <input
-            name="med"
+            name="medicare_number"
             onChange={onChange}
-            value={med}
+            value={medicare_number}
             readOnly={!isEdit}
           />
         </div>
-        {mode === "none" && <X />}
+        {mode === "none" && <X onClick={deletePerson} />}
       </CardContainer.Header>
       {mode === "add" ? (
         <div class="crudContainer-isInfected">
-          <input type="checkbox" onChange={() => {}} value={isInfected} />
+          <input type="checkbox" onChange={() => {}} value={is_infected} />
           {/* todo event */}
           <label>Is Infected</label>
         </div>
       ) : (
-        <Alert key={id} variant={isInfected ? "danger" : "success"}>
-          {isInfected ? (
+        <Alert key={id} variant={is_infected ? "danger" : "success"}>
+          {is_infected ? (
             <>
               <Frown /> Infected{" "}
             </>
@@ -100,9 +152,9 @@ export default function PersonCard(props) {
             </Form.Label>
             <Col sm="10">
               <input
-                name="first"
+                name="first_name"
                 onChange={onChange}
-                value={first}
+                value={first_name}
                 readOnly={!isEdit}
               />
             </Col>
@@ -113,9 +165,9 @@ export default function PersonCard(props) {
             </Form.Label>
             <Col sm="10">
               <input
-                name="last"
+                name="last_name"
                 onChange={onChange}
-                value={last}
+                value={last_name}
                 readOnly={!isEdit}
               />
             </Col>
@@ -126,9 +178,9 @@ export default function PersonCard(props) {
             </Form.Label>
             <Col sm="10">
               <input
-                name="dob"
+                name="date_of_birth"
                 onChange={onChange}
-                value={dob}
+                value={new Date(date_of_birth).toLocaleDateString()}
                 readOnly={!isEdit}
               />
             </Col>
@@ -139,22 +191,22 @@ export default function PersonCard(props) {
             </Form.Label>
             <Col sm="10">
               <input
-                name="telephone"
+                name="telephone_number"
                 onChange={onChange}
-                value={telephone}
+                value={telephone_number}
                 readOnly={!isEdit}
               />
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
             <Form.Label column sm="2">
-              <Mail /> Email
+              <Mail /> Email Address
             </Form.Label>
             <Col sm="10">
               <input
-                name="email"
+                name="email_address"
                 onChange={onChange}
-                value={email}
+                value={email_address}
                 readOnly={!isEdit}
               />
             </Col>
@@ -172,6 +224,24 @@ export default function PersonCard(props) {
               value={address}
               readOnly={!isEdit}
             />
+            {isEdit ?
+              listOfCities && 
+              <Dropdown
+              options={listOfCities}
+              onChange={(x)=>setPerson({...person,city_name:x.label})}
+              value={person.city_name}
+              placeholder="Select an option"
+             />
+             :
+             <input
+             size="6"
+             name="city_name"
+             onChange={onChange}
+             value={city_name}
+             readOnly={!isEdit}
+           />
+            }
+
             <input
               size="1"
               name="province"
@@ -181,9 +251,9 @@ export default function PersonCard(props) {
             />
             <input
               size="6"
-              name="postalCode"
+              name="postal_code"
               onChange={onChange}
-              value={postalCode}
+              value={postal_code}
               readOnly={!isEdit}
             />
           </Col>
@@ -232,7 +302,7 @@ export default function PersonCard(props) {
             <Alert variant="primary">
               <Alert.Heading>Public health care worker info</Alert.Heading>
               <p>
-                {first && last && <p> is a public health care worker</p>}
+                {first_name && last_name && <p> is a public health care worker</p>}
               </p>
               <hr />
               <Form.Group as={Row}>
@@ -296,10 +366,10 @@ export default function PersonCard(props) {
         </Form>
       </CardContainer.Body>
 
-      {mode !== "add" || mode !=="view" && (
+      {mode === "none" && (
         <div>
           {isEdit && (
-            <Button onClick={() => setIsEdit(false)} variant="primary">
+            <Button onClick={() => {setIsEdit(false); editPerson()}} variant="primary">
               {" "}
               Save{" "}
             </Button>

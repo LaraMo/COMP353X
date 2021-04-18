@@ -1,19 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FacilityCard from "../components/FacilityCard";
 import { Button, Modal } from "react-bootstrap";
 import CrudTitle from "../molecules/CrudTitle";
 
 function FacilityCrud() {
   const [isAdd, setIsAdd] = useState(false);
-  let [facility, setFacility] = useState({
-    id: "",
-    name: "",
-    telephone: "",
-    url: "",
-    type: "",
-    isDrive:"",
-    appointementType:"",
-  });
+  let [facility, setFacility] = useState([]);
+  let [addFacility, setAddFacility] = useState([]);
+
+
+  
+  useEffect(() => {
+    fetch('http://localhost:3001/selectFacility')
+    .then(response => response.json())
+    .then(data => setFacility(data.data))
+  })
+
+
+  function add() {
+    fetch('http://localhost:3001/addFacility', {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({...addFacility}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
 
   return (
     <div className="crudContainer">
@@ -22,7 +42,7 @@ function FacilityCrud() {
         subTitle="Add, delete, edit and view"
         addAction={() => setIsAdd(true)}
       />
-      {tempData.map((x, i) => {
+      {facility.map((x, i) => {
         return <FacilityCard mode="none" key={i} {...x} />;
       })}
       <Modal show={isAdd} onHide={() => setIsAdd(false)}>
@@ -30,13 +50,13 @@ function FacilityCrud() {
           <Modal.Title>Add New Facility</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FacilityCard {...facility} mode="add"/>
+          <FacilityCard addFacility={addFacility} setAddFacility={setAddFacility} {...facility} mode="add"/>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setIsAdd(false)}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => setIsAdd(false)}>
+          <Button variant="primary" onClick={() => {setIsAdd(false);add()}}>
             Add
           </Button>
         </Modal.Footer>
@@ -46,24 +66,3 @@ function FacilityCrud() {
 }
 
 export default FacilityCrud;
-
-const tempData = [
-  {
-    id: "1",
-    name: "Saint Marry",
-    telephone: "7387 2947284",
-    url: "www.com@gmai",
-    type: "private",
-    isDrive: true,
-    appointementType:"Walk-in",
-  },
-  {
-    id: "2",
-    name: "Saint Joe's",
-    telephone: "73872844",
-    url: "www.com@gmai",
-    type: "public",
-    isDrive: true,
-    appointementType:"Walk-in",
-  },
-];

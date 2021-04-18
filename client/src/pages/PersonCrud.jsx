@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PersonCard from "../components/PersonCard";
 import { Button, Modal } from "react-bootstrap";
 import CrudTitle from "../molecules/CrudTitle";
@@ -6,25 +6,16 @@ import CrudTitle from "../molecules/CrudTitle";
 function PersonCrud(props) {
   const isPhw = props.phw;
   const [isAdd, setIsAdd] = useState(false);
-  let [person, setPerson] = useState({
-    id: "",
-    first: "",
-    last: "",
-    dob: "",
-    med: "",
-    telephone: "",
-    address: "",
-    province: "",
-    isPhw: "",
-    startDate: "",
-    endDate: "",
-    schedual: "",
-    citizenship:"",
-    email: "",
-    isInfected: false,
-    postalCode: "",
-    facility: ""
-  });
+  let [addPerson, setAddPerson] = useState();
+  let [person, setPerson] = useState([]);
+
+
+  useEffect(() => {
+    fetch('http://localhost:3001/selectPerson')
+    .then(response => response.json())
+    .then(data => setPerson(data.data))
+  })
+
   return (
     <div className="crudContainer">
       <CrudTitle
@@ -32,7 +23,7 @@ function PersonCrud(props) {
         subTitle="Add, delete, edit and view"
         addAction={() => setIsAdd(true)}
       />
-      {tempData.map((x, i) => {
+      {person.map((x, i) => {
         return <PersonCard mode="none" key={i} {...x} />;
       })}
       <Modal show={isAdd} onHide={() => setIsAdd(false)}>

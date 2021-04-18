@@ -7,14 +7,49 @@ export default function FacilityCard(props) {
   let [facility, setFacility] = useState({
     id: props.id,
     name: props.name,
-    telephone: props.telephone,
-    url: props.url,
+    phone_number: props.phone_number,
+    web_address: props.web_address,
     type: props.type,
-    isDrive: props.isDrive,
+    has_drivethrough: props.has_drivethrough,
     numberHealthCareWorkers: props.numberHealthCareWorkers,
-    appointementType: props.appointementType,
+    appointment_type: props.appointment_type,
+    address: props.address
   });
-  let { id, name, telephone, url, type, isDrive, appointementType, numberHealthCareWorkers } = facility;
+  let { id, name, phone_number, web_address, type, has_drivethrough, address, appointment_type, numberHealthCareWorkers } = facility;
+
+  function editFacility() {
+    fetch("http://localhost:3001/editFacility", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({...facility}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function deleteFacility() {
+    fetch("http://localhost:3001/deleteFacility", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 
   let { mode } = props;
   function onChange(e) {
@@ -27,12 +62,14 @@ export default function FacilityCard(props) {
         <div>
           <input
             name="name"
-            onChange={onChange}
+            onChange={(e) => mode ==="add" ? 
+            props.setAddFacility({ ...props.addFacility, name: e.target.value })
+            : onChange(e)} 
             value={name}
             readOnly={!isEdit}
           />
         </div>
-        {mode === "none" && <X />}
+        {mode === "none" && <X onClick={deleteFacility} />}
       </CardContainer.Header>
       <CardContainer.Body>
         <Form>
@@ -42,53 +79,61 @@ export default function FacilityCard(props) {
             </Form.Label>
             <Col sm="10">
               <input
-                name="telephone"
-                onChange={onChange}
-                value={telephone}
+                name="phone_number"
+                onChange={(e) => mode ==="add" ? 
+                props.setAddFacility({ ...props.addFacility, phone_number: e.target.value })
+                : onChange(e)}
+                value={phone_number}
                 readOnly={!isEdit}
               />
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
             <Form.Label column sm="2">
-              Url
+             Web Address
             </Form.Label>
             <Col sm="10">
               <input
-                name="url"
-                onChange={onChange}
-                value={url}
+                name="web_address"
+                onChange={(e) => mode ==="add" ? 
+                props.setAddFacility({ ...props.addFacility, web_address: e.target.value })
+                : onChange(e)} 
+                value={web_address}
                 readOnly={!isEdit}
               />
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
             <Form.Label column sm="2">
-              Type
+            Appointment type
             </Form.Label>
             <Col sm="10">
               <input
-                name="appointementType"
-                onChange={onChange}
-                value={appointementType}
+                name="appointment_type"
+                onChange={(e) => mode ==="add" ? 
+                props.setAddFacility({ ...props.addFacility, appointment_type: e.target.value })
+                : onChange(e)}
+                value={appointment_type}
                 readOnly={!isEdit}
               />
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
             <Form.Label column sm="2">
-              Is drivethought
+             Has Drivethrough
             </Form.Label>
             <Col sm="10">
               {isEdit?
                 <input
                 type="checkbox"
                 readOnly={!isEdit}
-                onChange={onChange}
-                value={isDrive}
+                onChange={(e) => mode ==="add" ? 
+                props.setAddFacility({ ...props.addFacility, has_drivethrough: e.target.checked })
+                : setFacility({ ...facility, has_drivethrough: e.target.checked })}
+                checked={has_drivethrough}
               />
               :
-              <div>{isDrive ==="checked" ? "yes":"no"}</div>
+              <div>{has_drivethrough ? "yes":"no"}</div>
               }
             </Col>
           </Form.Group>
@@ -99,8 +144,25 @@ export default function FacilityCard(props) {
             <Col sm="10">
               <input
                 name="type"
-                onChange={onChange}
+                onChange={(e) => mode ==="add" ? 
+                props.setAddFacility({ ...props.addFacility, type: e.target.value })
+                : onChange(e)}
                 value={type}
+                readOnly={!isEdit}
+              />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row}>
+            <Form.Label column sm="2">
+              Address
+            </Form.Label>
+            <Col sm="10">
+              <input
+                name="address"
+                onChange={(e) => mode ==="add" ? 
+                props.setAddFacility({ ...props.addFacility, address: e.target.value })
+                : onChange(e)}
+                value={address}
                 readOnly={!isEdit}
               />
             </Col>
@@ -124,7 +186,7 @@ export default function FacilityCard(props) {
       {mode === "none" && (
         <div>
           {isEdit && (
-            <Button onClick={() => setIsEdit(false)} variant="primary">
+            <Button onClick={() => {setIsEdit(false);editFacility()}} variant="primary">
               {" "}
               Save{" "}
             </Button>

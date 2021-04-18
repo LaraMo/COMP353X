@@ -12,15 +12,16 @@ export default function PHCRCard(props) {
   let [isEdit, setIsEdit] = useState(props.mode === "add");
   let [phcr, setPhcr] = useState({
     id: props.id,
-    title: props.title,
-    step: props.steps,
+    reccomendation: props.reccomendation,
+    steps: props.steps,
   });
   let {
     id,
-    title,
-    step,
+    reccomendation,
+    steps,
   } = phcr;
 
+  let { mode } = props;
   function onChange(e) {
     let name = e.target.name;
     setPhcr({ ...phcr, [name]: e.target.value });
@@ -29,7 +30,7 @@ export default function PHCRCard(props) {
     <CardContainer>
       <CardContainer.Header className="title">
         <div></div>
-        <X />
+        {mode === "none" && <X onClick={()=>{}}/>}
       </CardContainer.Header>
       <CardContainer.Body>
         <Form>
@@ -39,19 +40,22 @@ export default function PHCRCard(props) {
             </Form.Label>
             <Col sm="10">
               <input
-                name="title"
-                onChange={onChange}
-                value={title}
+                name="reccomendation"
+                onChange={(e) => mode ==="add" ? 
+                props.setAddPHCR({ ...props.addPHCR, reccomendation: e.target.value })
+                : onChange(e)}
+                value={reccomendation}
                 readOnly={!isEdit}
               />
             </Col>
           </Form.Group>
+          {steps &&
           <Form.Group as={Row}>
             <Form.Label column sm="2">
              Steps
             </Form.Label>
             <Col sm="10">
-              {step.map((x, i) => {
+              {steps.map((x, i) => {
                 return ( <div className="mb-10 d-flex align-items-center">
                 <span>{i+1}. </span>
                 <input
@@ -64,12 +68,27 @@ export default function PHCRCard(props) {
               </div>)
               })}
             </Col>
-          </Form.Group>
+          </Form.Group>}
+          {mode === "add" &&
+          <Form.Group as={Row}>
+            <Form.Label column sm="2">
+             Steps
+            </Form.Label>
+            <Col sm="10">
+              <small>Make sure to seperate all steps with a |</small>
+                <input
+                name={'steps'}
+                onChange={(e) => props.setAddPHCR({ ...props.addPHCR, steps: e.target.value })} 
+                value={steps}
+              />
+            </Col>
+          </Form.Group>}
         </Form>
       </CardContainer.Body>
+      {mode === "none" && (
         <div>
           {isEdit && (
-            <Button onClick={() => setIsEdit(false)} variant="primary">
+            <Button onClick={() => {setIsEdit(false)}} variant="primary">
               {" "}
               Save{" "}
             </Button>
@@ -81,6 +100,7 @@ export default function PHCRCard(props) {
             </Button>
           )}
         </div>
+      )}
     </CardContainer>
   );
 }

@@ -20,16 +20,17 @@ export default function RegionCard(props) {
     level: props.level,
   });
 
-  let { id, name, color, level } = region;
+  let { id, name, level, oldLevel } = region;
   let { mode } = props;
 
   function editRegion() {
+    console.log(region)
     fetch("http://localhost:3001/editRegion", {
       method: "POST", 
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ region_name: name, alert_id: level, id: id }),
+      body: JSON.stringify({ region_name: name, alert_id: level, id: id, old_alert: oldLevel}),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -107,8 +108,8 @@ export default function RegionCard(props) {
                 (x) => {
                   console.log(x.value)
                 mode === "add" ? 
-                props.setAddRegion({ ...props.addRegion, level: x.value }): 
-                setRegion({ ...region, level: x.value })
+                props.setAddRegion({ ...props.addRegion, level: x.value,  }): 
+                setRegion({ ...region, oldLevel: level,level: x.value })
               }}
               value={mode==="add" ? props.addRegion.id: alerts[level - 1]} placeholder="Select an option" />
             </Col>

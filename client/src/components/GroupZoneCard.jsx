@@ -20,15 +20,50 @@ export default function GroupZoneCard(props) {
   } = groupZone;
 
   let { mode } = props;
+
   function onChange(e) {
     let name = e.target.name;
     setGroupZone({ ...groupZone, [name]: e.target.value });
+  }
+
+  function editGroupZone() {
+    fetch("http://localhost:3001/editGz", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ type: type, id:id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function deleteGroupZone() {
+    fetch("http://localhost:3001/deleteGz", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }
   return (
     <CardContainer>
       <CardContainer.Header className="title">
         <div></div>
-        {mode !== "add" && <X />}
+        {mode !== "add" && <X onClick={deleteGroupZone}/>}
       </CardContainer.Header>
       <CardContainer.Body>
         <Form>
@@ -39,7 +74,9 @@ export default function GroupZoneCard(props) {
             <Col sm="10">
               <input
                 name="type"
-                onChange={onChange}
+                onChange={(e) => mode ==="add" ? 
+                props.setAddGroupZone({ ...props.addGroupzone, type: e.target.value })
+                : onChange(e)}
                 value={type}
                 readOnly={!isEdit}
               />
@@ -50,7 +87,7 @@ export default function GroupZoneCard(props) {
       {mode !== "add" && (
         <div>
           {isEdit && (
-            <Button onClick={() => setIsEdit(false)} variant="primary">
+            <Button onClick={() => {setIsEdit(false); editGroupZone()}} variant="primary">
               {" "}
               Save{" "}
             </Button>

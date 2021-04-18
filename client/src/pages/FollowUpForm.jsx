@@ -13,7 +13,7 @@ function FollowUpForm() {
     name: "",
     measures: "",
     region: {},
-    progress: 0,
+    progress: 50,
   });
 
   return (
