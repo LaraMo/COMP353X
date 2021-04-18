@@ -9,12 +9,12 @@ import RegionCrud from './pages/RegionCrud.jsx';
 import GroupZoneCrud from './pages/GroupZoneCrud.jsx';
 import FollowUpForm from './pages/FollowUpForm.jsx';
 import PublicHealthCareRecsCrud from './pages/PublicHealthCareRecsCrud.jsx';
+import PublicHealthWorkerCrud from './pages/PublicHealthWorkerCrud.jsx';
 import AddAlert from './pages/AddAlert.jsx';
 import ShowMessages from './pages/ShowMessages.jsx';
 import PeopleByAddress from './pages/PeopleByAddress.jsx';
 import DetailedFacility from './pages/DetailedFacility.jsx';
 import './scss/app.scss';
-
 
 export default function App(){
     return (
@@ -23,7 +23,7 @@ export default function App(){
           <Switch>
               <Route exact path={home} component={Home}/>
               <Route path={crudPerson} component={PersonCrud} />
-              <Route path={crudHealthWorker} component={() => <PersonCrud phw/>} />
+              <Route path={crudHealthWorker} component={PublicHealthWorkerCrud} />
               <Route path={crudFacility} component={FacilityCrud} />
               <Route path={crudRegion} component={RegionCrud} />
               <Route path={crudGroupZone} component={GroupZoneCrud} />

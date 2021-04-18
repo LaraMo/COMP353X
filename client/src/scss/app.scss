@@ -29,6 +29,10 @@ input  {
     align-items: baseline !important;
 }
 
+.marginBottom {
+    margin-bottom: 10px;
+}
+
 //import all other scss
 @import './home.scss';
 @import './crud.scss';

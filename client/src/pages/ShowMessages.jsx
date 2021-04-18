@@ -1,10 +1,23 @@
-import React, { useState } from "react";
-import TimePicker from 'react-time-picker';
-import { Alert, Form } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import DateTimePicker from 'react-datetime-picker';
+import { Alert, Col, Form, Row } from "react-bootstrap";
 import CrudTitle from "../molecules/CrudTitle";
-
+import moment from 'moment';
+moment().format();
 function ShowMessages() {
-  const [value, onChange] = useState('10:00');
+
+const [startDate, setStartDate] = useState();
+const [endDate, setEndDate] = useState();
+const [messages, setMessages] = useState([]);
+useEffect(() => {
+  let start = startDate? new Date(startDate).toISOString().slice(0, 10)+ " " +new Date(startDate).toLocaleTimeString(): '';
+  let end = endDate? new Date(endDate).toISOString().slice(0, 10)+ " " +new Date(endDate).toLocaleTimeString(): '';
+
+  console.log(startDate, messages)
+    fetch("http://localhost:3001/showMessages?start_date="+start+"&end_date="+end)
+      .then((response) => response.json())
+      .then((data) => setMessages(data.data));
+  }, [endDate]);
 
   return (
     <div className="crudContainer">
@@ -13,21 +26,35 @@ function ShowMessages() {
         subTitle="search for messages by time"
       />
       <Form.Group>
-        <Form.Label>🔍time  </Form.Label>
-        <TimePicker
-        onChange={((value)=>onChange(value))}
-        value={value}
-        />
+        <Form.Group as={Col}>
+            <Form.Label column sm="2">
+              Start date
+            </Form.Label>
+            <DateTimePicker
+              onChange={(v) => setStartDate(v)}
+              value={startDate}
+              />
+          </Form.Group>
       </Form.Group>
-      {tempResults.length ===0? 
+
+      <Form.Group>
+        <Form.Group as={Col}>
+            <Form.Label column sm="2">
+              End date
+            </Form.Label>
+            <DateTimePicker
+              onChange={(v) => setEndDate(v)}
+              value={endDate}
+              />
+          </Form.Group>
+      </Form.Group>
+      {messages.length ===0? 
       <div>No Results</div>
       :
-      tempResults.map((x) => {
+      messages.map((x) => {
         return (
           <Alert key={x.id} variant="info">
-          <small>{x.date}-{x.time}-{x.region}</small>
-          <br/>
-          {x.message}
+          <small>{x.message}</small>
         </Alert> 
         );
       })
@@ -36,21 +63,5 @@ function ShowMessages() {
   );
 }
 
-const tempResults = [
-  {
-    id: 1,
-    message: "this is a cool message, this is so nice!",
-    date: "15/05/24",
-    time: "12:34",
-    region: "Montreal",
-  },
-  {
-    id: 2,
-    message: "This is another message",
-    date: "15/05/24",
-    time: "03:24",
-    region: "Montreal",
-  },
-];
 
 export default ShowMessages;

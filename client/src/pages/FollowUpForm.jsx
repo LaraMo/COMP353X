@@ -9,11 +9,12 @@ import { Alert } from "react-bootstrap";
 function FollowUpForm() {
   let [followupForm, setFollowUpForm] = useState({
     level: "",
+    id: "",
     color: "light",
     name: "",
     measures: "",
     region: {},
-    progress: 50,
+    progress: 0,
   });
 
   return (
@@ -32,10 +33,11 @@ function FollowUpForm() {
       </ProgressBar>
       {followupForm.progress === 0 ? (
         <Login
-          login={() => setFollowUpForm({ ...followupForm, progress: 50 })}
+          followupForm={followupForm}
+          setFollowUpForm={setFollowUpForm}
         />
       ) : followupForm.progress === 50 ? (
-        <FollowUpFormContainer onSubmit={() => setFollowUpForm({ ...followupForm, progress: 100 })}/>
+        <FollowUpFormContainer id={followupForm.id} onSubmit={() => setFollowUpForm({ ...followupForm, progress: 100 })}/>
       ) : (
         <Alert variant="sucessful">Submited</Alert>
       )}

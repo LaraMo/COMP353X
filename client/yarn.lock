@@ -1854,6 +1854,11 @@
   "resolved" "https://registry.yarnpkg.com/@types/q/-/q-1.5.4.tgz"
   "version" "1.5.4"
 
+"@types/react-calendar@^3.0.0":
+  "integrity" "sha512-7yDdyPnNaKqOIp97NmPhDxaXb7pBSag+pYWBtt+vBJyyqqiMMtXzv5bdEWjVN7AWmfWdmzGsP8kg+TzvGvwwQg=="
+  "resolved" "https://registry.npmjs.org/@types/react-calendar/-/react-calendar-3.1.4.tgz"
+  "version" "3.1.4"
+
 "@types/react-transition-group@^4.4.1":
   "integrity" "sha512-vIo69qKKcYoJ8wKCJjwSgCTM+z3chw3g18dkrDfVX665tMH7tmbDxEAnPdey4gTlwZz5QuHGzd+hul0OVZDqqQ=="
   "resolved" "https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.1.tgz"
@@ -2201,7 +2206,7 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
-"@wojtekmaj/date-utils@^1.0.0":
+"@wojtekmaj/date-utils@^1.0.0", "@wojtekmaj/date-utils@^1.0.2", "@wojtekmaj/date-utils@^1.0.3":
   "integrity" "sha512-1VPkkTBk07gMR1fjpBtse4G+oJqpmE+0gUFB0dg3VIL7qJmUVaBoD/vlzMm/jNeOPfvlmerl1lpnsZyBUFIRuw=="
   "resolved" "https://registry.npmjs.org/@wojtekmaj/date-utils/-/date-utils-1.0.3.tgz"
   "version" "1.0.3"
@@ -7595,6 +7600,11 @@
   "resolved" "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz"
   "version" "1.0.4"
 
+"moment@^2.29.1":
+  "integrity" "sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ=="
+  "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
+  "version" "2.29.1"
+
 "move-concurrently@^1.0.1":
   "integrity" "sha1-viwAX9oy4LKa8fBdfEszIUxwH5I="
   "resolved" "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz"
@@ -9368,6 +9378,16 @@
     "uncontrollable" "^7.2.1"
     "warning" "^4.0.3"
 
+"react-calendar@^3.3.1":
+  "integrity" "sha512-ykbvXASArQQ8KZlCEXEdE+w+KFGSj7kDpdTRzbLVJeN26oUIu+EFavFDAqg4G//zTO0tSq5SMfqAa6fjrdGQjQ=="
+  "resolved" "https://registry.npmjs.org/react-calendar/-/react-calendar-3.4.0.tgz"
+  "version" "3.4.0"
+  dependencies:
+    "@wojtekmaj/date-utils" "^1.0.2"
+    "get-user-locale" "^1.2.0"
+    "merge-class-names" "^1.1.1"
+    "prop-types" "^15.6.0"
+
 "react-clock@^3.0.0":
   "integrity" "sha512-D3K82D3YGcDtzxZCfiACLcDTL8cJXSgpdrzTY9ff3H5vflxlLzTSLF8apZRo6JZzOFrZQvw5mrS7TkQzj9nG0A=="
   "resolved" "https://registry.npmjs.org/react-clock/-/react-clock-3.0.0.tgz"
@@ -9376,6 +9396,37 @@
     "@wojtekmaj/date-utils" "^1.0.0"
     "merge-class-names" "^1.1.1"
     "prop-types" "^15.6.0"
+
+"react-date-picker@^8.1.0", "react-date-picker@^8.1.1":
+  "integrity" "sha512-kFhn+uSJML+EuROvR6qLYU5G3wsxrdB2K1ugh1t6HjJCjphE6ot85jb8THWebqWEcQi07pLseU7ZFpzKDD3A6A=="
+  "resolved" "https://registry.npmjs.org/react-date-picker/-/react-date-picker-8.1.1.tgz"
+  "version" "8.1.1"
+  dependencies:
+    "@types/react-calendar" "^3.0.0"
+    "@wojtekmaj/date-utils" "^1.0.3"
+    "get-user-locale" "^1.2.0"
+    "make-event-props" "^1.1.0"
+    "merge-class-names" "^1.1.1"
+    "prop-types" "^15.6.0"
+    "react-calendar" "^3.3.1"
+    "react-fit" "^1.0.3"
+    "update-input-width" "^1.1.1"
+
+"react-datetime-picker@^3.2.0":
+  "integrity" "sha512-zmjm4olduGsgOXStePYAsqFD+Xy4dLMClBl87IVqh6ymFSLuOPgZzjmeLyqLsdb3lnXA8gdtpNXi0LNQkEX3ZQ=="
+  "resolved" "https://registry.npmjs.org/react-datetime-picker/-/react-datetime-picker-3.2.0.tgz"
+  "version" "3.2.0"
+  dependencies:
+    "@wojtekmaj/date-utils" "^1.0.3"
+    "get-user-locale" "^1.2.0"
+    "make-event-props" "^1.1.0"
+    "merge-class-names" "^1.1.1"
+    "prop-types" "^15.6.0"
+    "react-calendar" "^3.3.1"
+    "react-clock" "^3.0.0"
+    "react-date-picker" "^8.1.0"
+    "react-fit" "^1.0.3"
+    "react-time-picker" "^4.2.0"
 
 "react-dev-utils@^11.0.3":
   "integrity" "sha512-dx0LvIGHcOPtKbeiSUM4jqpBl3TcY7CDjZdfOIcKeznE7BWr9dg0iPG90G5yfVQ+p/rGNMXdbfStvzQZEVEi4A=="
@@ -9581,7 +9632,7 @@
     "invariant" "^2.2.4"
     "react-transition-group" "^2.4.0"
 
-"react-time-picker@^4.2.1":
+"react-time-picker@^4.2.0", "react-time-picker@^4.2.1":
   "integrity" "sha512-T0aEabJ3bz54l8LV3pdpB5lOZuO3pRIbry5STcUV58UndlrWLcHpdpvS1IC8JLNXhbLxzGs1MmpASb5k1ddlsg=="
   "resolved" "https://registry.npmjs.org/react-time-picker/-/react-time-picker-4.2.1.tgz"
   "version" "4.2.1"
