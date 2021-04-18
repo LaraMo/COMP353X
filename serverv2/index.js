@@ -203,7 +203,7 @@ app.post('/deletePhcw', (req, res) => {
   });
 
 app.get('/selectPhcw', (req, res) => {
-  db.query("SELECT phw.id as worker_id, phcw.start_date, phcw.end_date, phcw.phc_id, phcw.schedule, p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.address, p.province, p.email_address, p.is_infected, pc.postal_code, p.citizenship, city.name, city.id as city_id, pc.id as postal_code_id FROM Person p JOIN PostalCode pc on pc.id = p.postal_code JOIN City city on city.id = pc.city_id JOIN Region r ON r.id=city.region_id JOIN PublicHealthWorker phw ON phw.person_id = p.id JOIN PublicHealthCenterWorkers phcw on phcw.phw_id = phw.id ORDER BY p.id ASC;", function (error, results, fields) {
+  db.query("SELECT phw.id as worker_id, phc.name as facility, phcw.start_date, phcw.end_date, phcw.phc_id, phcw.schedule, p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.address, p.province, p.email_address, p.is_infected, pc.postal_code, p.citizenship, city.name, city.id as city_id, pc.id as postal_code_id FROM Person p JOIN PostalCode pc on pc.id = p.postal_code JOIN City city on city.id = pc.city_id JOIN Region r ON r.id=city.region_id JOIN PublicHealthWorker phw ON phw.person_id = p.id JOIN PublicHealthCenterWorkers phcw on phcw.phw_id = phw.id JOIN PublicHealthCenter phc on phc.id = phcw.phc_id ORDER BY p.id ASC;", function (error, results, fields) {
     if (error) {
       console.log(error)
       res.send({ success: false });
