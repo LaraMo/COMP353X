@@ -17,6 +17,7 @@ export default function PersonCard(props) {
     last: props.last,
     dob: props.dob,
     med: props.med,
+    citizenship: props.citizenship,
     telephone: props.telephone,
     address: props.address,
     province: props.province,
@@ -27,7 +28,9 @@ export default function PersonCard(props) {
     startDate: props.startDate,
     endDate: props.endDate,
     schedual: props.schedual,
-    facility: props.facility
+    facility: props.facility,
+    mother: props.mother,
+    father: props.father
   });
   let {
     id,
@@ -38,6 +41,7 @@ export default function PersonCard(props) {
     telephone,
     address,
     province,
+    citizenship,
     email,
     isInfected,
     postalCode,
@@ -45,7 +49,9 @@ export default function PersonCard(props) {
     startDate,
     endDate,
     schedual,
-    facility
+    facility,
+    mother,
+    father, 
   } = person;
   let { mode } = props;
   function onChange(e) {
@@ -53,7 +59,7 @@ export default function PersonCard(props) {
     setPerson({ ...person, [name]: e.target.value });
   }
   return (
-    <CardContainer>
+    <CardContainer className="mb-10">
       <CardContainer.Header className="title">
         <div>
           Card#
@@ -64,7 +70,7 @@ export default function PersonCard(props) {
             readOnly={!isEdit}
           />
         </div>
-        {mode !== "add" && <X />}
+        {mode === "none" && <X />}
       </CardContainer.Header>
       {mode === "add" ? (
         <div class="crudContainer-isInfected">
@@ -153,35 +159,76 @@ export default function PersonCard(props) {
               />
             </Col>
           </Form.Group>
+          {mode !== "view" &&
+          <Form.Group as={Row}>
+          <Form.Label column sm="2">
+            <Home /> Address
+          </Form.Label>
+          <Col sm="10">
+            <input
+              sie="3"
+              name="address"
+              onChange={onChange}
+              value={address}
+              readOnly={!isEdit}
+            />
+            <input
+              size="1"
+              name="province"
+              onChange={onChange}
+              value={province}
+              readOnly={!isEdit}
+            />
+            <input
+              size="6"
+              name="postalCode"
+              onChange={onChange}
+              value={postalCode}
+              readOnly={!isEdit}
+            />
+          </Col>
+        </Form.Group>
+          }
           <Form.Group as={Row}>
             <Form.Label column sm="2">
-              <Home /> Address
+              Citizenship
             </Form.Label>
             <Col sm="10">
               <input
-                sie="3"
-                name="address"
+                name="citizenship"
                 onChange={onChange}
-                value={address}
-                readOnly={!isEdit}
-              />
-              <input
-                size="1"
-                name="province"
-                onChange={onChange}
-                value={province}
-                readOnly={!isEdit}
-              />
-              <input
-                size="6"
-                name="postalCode"
-                onChange={onChange}
-                value={postalCode}
+                value={citizenship}
                 readOnly={!isEdit}
               />
             </Col>
           </Form.Group>
-          {isPhw && (
+          {mode === "view" && 
+          <>
+          <Form.Group as={Row}>
+            <Form.Label column sm="2">
+              Mother
+            </Form.Label>
+            <Col sm="10">
+              <input
+                value={mother}
+                readOnly
+              />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row}>
+            <Form.Label column sm="2">
+              Father
+            </Form.Label>
+            <Col sm="10">
+              <input
+                value={father}
+                readOnly
+              />
+            </Col>
+          </Form.Group>
+          </>
+          }
+          {isPhw && mode !== "view" && 
             <Alert variant="primary">
               <Alert.Heading>Public health care worker info</Alert.Heading>
               <p>
@@ -245,11 +292,11 @@ export default function PersonCard(props) {
                 </Col>
               </Form.Group>
             </Alert>
-          )}
+          }
         </Form>
       </CardContainer.Body>
 
-      {mode !== "add" && (
+      {mode !== "add" || mode !=="view" && (
         <div>
           {isEdit && (
             <Button onClick={() => setIsEdit(false)} variant="primary">

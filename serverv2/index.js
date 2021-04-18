@@ -9,6 +9,17 @@ var bodyParser = require('body-parser')
 let jsonParser = bodyParser.json()
 app.use(jsonParser)
 
+app.use(function(req, res, next) {
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Access-Control-Allow-Methods", 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+	res.setHeader('Access-Control-Allow-Credentials', true);
+
+	next();
+})
+
+
+
 let db;
 mysqlssh.connect(
   {
@@ -219,8 +230,8 @@ app.post('/addFacility', (req, res) => {
 });
 
 app.post('/editFacility', (req, res) => {
-  let { name, phone_number, web_address, type, has_drivethrough, appointment_type, id } = req.body;
-  db.query("UPDATE PublicHealthCenter SET name = ?, phone_number = ?, web_address = ?, type = ?, appointment_type = ?, has_drivethrough = ?, appointment_type = ? WHERE id = ?;", [name, phone_number, web_address, type, appointment_type, has_drivethrough, appointment_type, id], function (error, results, fields) {
+  let { name, phone_number, web_address, type, has_drivethrough, appointment_type, address, id } = req.body;
+  db.query("UPDATE PublicHealthCenter SET name = ?, phone_number = ?, web_address = ?, type = ?, appointment_type = ?, has_drivethrough = ?, appointment_type = ?, address = ? WHERE id = ?;", [name, phone_number, web_address, type, appointment_type, has_drivethrough, appointment_type, address, id], function (error, results, fields) {
     if (error) {
       console.log(error)
       res.send({ success: false });
@@ -245,7 +256,7 @@ app.post('/deleteFacility', (req, res) => {
 });
 
 app.get('/selectFacility', (req, res) => {
-  db.query("SELECT id, name, phone_number, web_address, type, has_drivethrough, appointment_type FROM PublicHealthCenter;", function (error, results, fields) {
+  db.query("SELECT id, name, phone_number, web_address, type, has_drivethrough, appointment_type, address FROM PublicHealthCenter;", function (error, results, fields) {
     if (error) {
       console.log(error)
       res.send({ success: false });
@@ -431,7 +442,7 @@ app.get('/selectPHRecs', (req, res) => {
       res.send({ success: false });
     }
     else {
-      res.send({ success: true, data: results.map(result =>  { return {id: result.id, reccomendation: result.reccomendation, steps: result.steps?.split('|')}} ) });
+      res.send({ success: true, data: results.map(result =>  { return {id: result.id, reccomendation: result.reccomendation, steps: result.steps? result.steps.split('|'): undefined}} ) });
     }
   });
 });

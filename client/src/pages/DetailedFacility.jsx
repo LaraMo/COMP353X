@@ -3,7 +3,7 @@ import FacilityCard from "../components/FacilityCard";
 import { Button, Modal } from "react-bootstrap";
 import CrudTitle from "../molecules/CrudTitle";
 
-function FacilityCrud() {
+function DetailedFacility() {
   const [isAdd, setIsAdd] = useState(false);
   let [facility, setFacility] = useState({
     id: "",
@@ -12,40 +12,24 @@ function FacilityCrud() {
     url: "",
     type: "",
     isDrive:"",
+    numberHealthCareWorkers:"",
     appointementType:"",
   });
 
   return (
     <div className="crudContainer">
       <CrudTitle
-        title="Facility 🏥"
-        subTitle="Add, delete, edit and view"
-        addAction={() => setIsAdd(true)}
+        title="DETAILED Facility 🏥"
+        subTitle="View detailed facility"
       />
       {tempData.map((x, i) => {
-        return <FacilityCard mode="none" key={i} {...x} />;
+        return <FacilityCard mode="detailed" key={i} {...x} />;
       })}
-      <Modal show={isAdd} onHide={() => setIsAdd(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New Facility</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <FacilityCard {...facility} mode="add"/>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setIsAdd(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={() => setIsAdd(false)}>
-            Add
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 }
 
-export default FacilityCrud;
+export default DetailedFacility;
 
 const tempData = [
   {
@@ -54,7 +38,8 @@ const tempData = [
     telephone: "7387 2947284",
     url: "www.com@gmai",
     type: "private",
-    isDrive: true,
+    isDrive: false,
+    numberHealthCareWorkers:35,
     appointementType:"Walk-in",
   },
   {
@@ -64,6 +49,7 @@ const tempData = [
     url: "www.com@gmai",
     type: "public",
     isDrive: true,
+    numberHealthCareWorkers: 43,
     appointementType:"Walk-in",
   },
 ];
