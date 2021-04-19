@@ -5,6 +5,22 @@
 
 Make sure to have `node.js` installed on your computer and clone this repo using `git clone https://github.com/LaraMo/COMP353X.git`
 
+Create a .env file with the following content inside of `/serverv2` and replace the values within <> with your own
+(to get the the server folder `cd serverv2`)
+```.env 
+SSH_HOST=login.encs.concordia.ca
+SSH_USER=<your encs username>
+SSH_PASS=<your encs password>
+
+DB_HOST=xdc353.encs.concordia.ca,
+DB_USER=xdc353_4,
+DB_PASS=COMP353X,
+DB_DATABASE=xdc353_4
+```
+
+when this is done `cd ..` to go back to the root folder
+
+
 ### run the client
 
 ```bash
