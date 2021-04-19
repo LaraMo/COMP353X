@@ -610,7 +610,7 @@ app.get('/detailFacilities', (req, res) => {
 
 /********************** /13 *******************/
 app.get('/detailRegion', (req, res) => {
-  db.query("SELECT  distinct r.id, r.name as 'Region Name', group_concat(Distinct c.name) as Cities, group_concat( distinct pc.postal_code) as 'Postal Codes' FROM Region as r JOIN City c ON r.id = c.region_id JOIN PostalCode pc ON c.id = pc.city_id GROUP BY r.id, r.name;", function(error, results, fields){
+  db.query("SELECT r.id, r.name as 'Region Name', group_concat(CONCAT(city.name, ':', (SELECT group_concat(ppc.postal_code separator '|') FROM PostalCode ppc where ppc.city_id = city.id group by ppc.city_id))) as city_postal_codes FROM Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id GROUP BY r.id, r.name;", function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
@@ -666,7 +666,7 @@ app.get('/query16', (req, res) => {
 /********************** /17 *******************/
 app.get('/regionReport', (req, res) => {
     let {start_date, end_date} = req.query;
-  db.query("SELECT r.id as regID, r.name as regName, count(distinct infected.id) as infected, count(distinct healthy.id) as healthy, group_concat(distinct m.message separator '|') AS allmessages From Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id LEFT JOIN Person infected on (pc.id = infected.postal_code AND infected.is_infected = true) LEFT JOIN Person healthy on (pc.id = healthy.postal_code AND healthy.is_infected = false) LEFT JOIN Messages m ON r.id = m.region_id WHERE m.time between ? and ? GROUP by r.id, r.name;", [start_date, end_date], function(error, results, fields){
+  db.query("SELECT r.id as regID, r.name as regName, count(distinct infected.id) as infected, count(distinct healthy.id) as healthy, group_concat(distinct m.message separator '|') AS allmessages From Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id LEFT JOIN Person infected on (pc.id = infected.postal_code AND infected.is_infected = true) LEFT JOIN Person healthy on (pc.id = healthy.postal_code AND healthy.is_infected = false) LEFT JOIN Messages m ON r.id = m.region_id Where (m.time between ? and ?) or m.time is null GROUP by r.id, r.name;", [start_date, end_date], function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
