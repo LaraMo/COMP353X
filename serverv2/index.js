@@ -584,7 +584,7 @@ app.get('/showMessages', (req, res) => {
 /********************** /11 *******************/
 app.get('/peopleByAddress', (req, res) => {
   let {address} = req.query;
-  db.query("SELECT DISTINCT p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.citizenship, p.email_address, CONCAT(parent1.first_name, ' ', parent1.last_name) as parent1, CONCAT(parent2.first_name, ' ', parent2.last_name) as parent2 FROM Person p LEFT JOIN Person parent1 on (parent1.id = p.parent1_id) LEFT JOIN Person parent2 on (parent2.id = p.parent2_id  AND parent2.id <> parent1.id); ", [address], function(error, results, fields){
+  db.query("SELECT DISTINCT p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.citizenship, p.email_address, CONCAT(parent1.first_name, ' ', parent1.last_name) as parent1, CONCAT(parent2.first_name, ' ', parent2.last_name) as parent2 FROM Person p LEFT JOIN Person parent1 on (parent1.id = p.parent1_id) LEFT JOIN Person parent2 on (parent2.id = p.parent2_id  AND parent2.id <> parent1.id) WHERE p.address = ?; ", [address], function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
