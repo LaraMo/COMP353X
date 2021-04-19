@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap";
 
 export default function FollowUpFormContainer(props) {
   const [symptomes, setSymptomes] = useState([]);
-  const [formStatus, setFormSetup] = useState({ fever: "", other: "", symptomes:""});
+  const [formStatus, setFormSetup] = useState({ temperature: "", other: "", symptoms:"", id:props.id});
   function onChange(e) {
     let name = e.target.name;
     console.log(name, e.target.value);
@@ -23,8 +23,26 @@ export default function FollowUpFormContainer(props) {
   });
 
   function submit() {
-    console.log(formStatus);
-    // props.onSubmit
+    fetch("http://localhost:3001/followUpForm", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({...formStatus, symptoms: Object.keys(formStatus.symptoms)}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if(data.success){
+          props.onSubmit();
+        }
+        else {
+          alert("Error submiting form")
+        } 
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    
   }
 
   return (
@@ -35,8 +53,8 @@ export default function FollowUpFormContainer(props) {
         <Form.Control
           autoFocus
           type="number"
-          name="fever"
-          value={formStatus.fever}
+          name="temperature"
+          value={formStatus.temperature}
           onChange={onChange}
         />
       </Form.Group>
@@ -47,10 +65,10 @@ export default function FollowUpFormContainer(props) {
               onChange={(e) =>
                 {
                   if(!e.target.checked){
-                    delete formStatus.symptomes[e.target.name]
+                    delete formStatus.symptoms[e.target.name]
                   }
                   else{ 
-                    setFormSetup({ ...formStatus, symptomes: {...formStatus.symptomes, [e.target.name]: e.target.checked }})
+                    setFormSetup({ ...formStatus, symptoms: {...formStatus.symptoms, [e.target.name]: e.target.checked }})
                   }
                 }
               }

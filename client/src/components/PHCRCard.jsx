@@ -26,11 +26,48 @@ export default function PHCRCard(props) {
     let name = e.target.name;
     setPhcr({ ...phcr, [name]: e.target.value });
   }
+
+  function deletePHCRec(){
+    fetch("http://localhost:3001/deletePHRecs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function editPHCR() {
+    console.log(phcr)
+    fetch("http://localhost:3001/editPHRecs", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({...phcr, reccomendation_text: phcr.reccomendation, substeps: steps}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  
   return (
     <CardContainer>
       <CardContainer.Header className="title">
         <div></div>
-        {mode === "none" && <X onClick={()=>{}}/>}
+        {mode === "none" && <X onClick={deletePHCRec}/>}
       </CardContainer.Header>
       <CardContainer.Body>
         <Form>
@@ -52,15 +89,20 @@ export default function PHCRCard(props) {
           {steps &&
           <Form.Group as={Row}>
             <Form.Label column sm="2">
-             Steps
+             substeps
             </Form.Label>
             <Col sm="10">
               {steps.map((x, i) => {
                 return ( <div className="mb-10 d-flex align-items-center">
                 <span>{i+1}. </span>
                 <input
+                id={i}
                 name={`steps-${x}`}
-                onChange={onChange}
+                onChange={(e) => {
+                  let newSteps = steps;
+                  newSteps[i] = e.target.value;
+                  setPhcr({...phcr, steps: newSteps})
+                }}
                 value={x}
                 key={i}
                 readOnly={!isEdit}
@@ -88,7 +130,7 @@ export default function PHCRCard(props) {
       {mode === "none" && (
         <div>
           {isEdit && (
-            <Button onClick={() => {setIsEdit(false)}} variant="primary">
+            <Button onClick={() => {setIsEdit(false);editPHCR()}} variant="primary">
               {" "}
               Save{" "}
             </Button>

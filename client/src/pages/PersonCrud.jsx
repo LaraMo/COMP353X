@@ -10,6 +10,24 @@ function PersonCrud(props) {
   let [person, setPerson] = useState([]);
 
 
+  function add() {
+    console.log(addPerson)
+    fetch('http://localhost:3001/addPerson', {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({...addPerson, date_of_birth: new Date(addPerson.date_of_birth).toISOString().slice(0, 10)}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
   useEffect(() => {
     fetch('http://localhost:3001/selectPerson')
     .then(response => response.json())
@@ -31,13 +49,13 @@ function PersonCrud(props) {
           <Modal.Title>Add New Person</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <PersonCard {...person} mode="add" isPhw={isPhw}/>
+          <PersonCard addPerson={addPerson} setAddPerson={setAddPerson} mode="add" isPhw={isPhw}/>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setIsAdd(false)}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => setIsAdd(false)}>
+          <Button variant="primary" onClick={() => {add();setIsAdd(false)}}>
             Add
           </Button>
         </Modal.Footer>
@@ -47,53 +65,3 @@ function PersonCrud(props) {
 }
 
 export default PersonCrud;
-
-const tempData = [
-  {
-    id: "1",
-    first: "Layla",
-    last: "Manoo",
-    dob: "16/31/44",
-    med: "349-23-2444",
-    telephone: "439-435-222",
-    address: "Maple Street 35",
-    province: "QC",
-    email: "Layla@gmail.com",
-    isInfected: true,
-    citizenship:"Canadian",
-    postalCode: "H38-WH2",
-  },
-  {
-    id: "2",
-    first: "Layla",
-    last: "Manoo",
-    dob: "16/31/44",
-    med: "349-23-2444",
-    telephone: "439-435-222",
-    address: "Maple Street 35",
-    province: "QC",
-    email: "Layla@gmail.com",
-    isInfected: false,
-    citizenship:"Canadian",
-    postalCode: "H38-WH2",
-  },
-  {
-    id: "3",
-    first: "Layla",
-    last: "Manoo",
-    dob: "16/31/44",
-    med: "349-23-2444",
-    telephone: "439-435-222",
-    address: "Maple Street 35",
-    province: "QC",
-    citizenship:"Canadian",
-    email: "Layla@gmail.com",
-    isInfected: false,
-    isPhw: true,
-    startDate: "16/31/44",
-    endDate: "16/31/44",
-    schedual: "Monday - Friday",
-    facility: "Saint Marry",
-    postalCode: "H38-WH2",
-  },
-];

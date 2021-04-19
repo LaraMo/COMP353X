@@ -17,7 +17,7 @@ export default function Login(props) {
       .then((response) => response.json())
       .then((data) => {
         if(data.success){
-          props.login();
+          props.setFollowUpForm({ ...props.followupForm, progress: 50, id: data.id });
         }
         else {
           alert("Error login in")

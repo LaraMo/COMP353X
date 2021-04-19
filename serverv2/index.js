@@ -540,7 +540,7 @@ app.post('/followUpForm', (req, res) => {
 });
 
 /********************* /9 **********************/
-app.get('/query09', (req, res) => {
+app.get('/datePeopleSymptoms', (req, res) => {
     let {date, id} = req.query;
     db.query("SELECT  p.first_name, p.last_name, group_concat(s.symptom) as 'Common Symptom', group_concat(ds.other) as 'Other Symptoms' FROM DiagnosticSymptoms as ds INNER JOIN Diagnostic as d ON ds.Diagnostic_id = d.id INNER JOIN Person as p ON d.person_id = p.id INNER JOIN Symptom as s ON ds.Symptom_id = s.id WHERE p.id = ? AND d.date_taken = ? GROUP BY p.first_name;", [id, date], function(error, results, fields){
         if (error) {
@@ -567,7 +567,7 @@ app.get('/infectedPeople', (req, res) => {
 
 /********************* /10 **********************/
 
-app.get('/query10', (req, res) => {
+app.get('/showMessages', (req, res) => {
   let {start_date, end_date} = req.query;
   db.query("SELECT m.message, m.time FROM Messages m WHERE m.time BETWEEN ? AND ?;", [start_date, end_date], function(error, results, fields){
     if (error) {
