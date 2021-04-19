@@ -28,7 +28,7 @@ function DatePeopleSymptoms() {
         end
     )
       .then((response) => response.json())
-      .then((data) => setResults(data.data[0]));
+      .then((data) => setResults(data.data));
   }
 
   return (
@@ -51,24 +51,24 @@ function DatePeopleSymptoms() {
           <DateTimePicker onChange={(v) => setEndDate(v)} value={endDate} />
         </Form.Group>
       </Form.Group>
-      {results.regName && (
-        <Card className="marginBottom">
-          <Card.Header>About {results.regName}</Card.Header>
+      {results && results.map(r => {
+          return <Card className="marginBottom">
+          <Card.Header>About {r.regName}</Card.Header>
           <Card.Body>
             <Card.Text>
-              Healthy: {results.healthy}
+              Healthy: {r.healthy}
               <br />
-              Infected: {results.infected}
+              Infected: {r.infected}
               <br />
-              Region: {results.regName}
+              Region: {r.regName}
               <br />
             </Card.Text>
-            {results.allmessages.split("|").map((x) => {
+            {r.allmessages?.split("|").map((x) => {
               return <Alert variant="info">{x}</Alert>;
             })}
           </Card.Body>
         </Card>
-      )}
+      })}
       <Button onClick={search}>Search</Button>
     </div>
   );

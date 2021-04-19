@@ -41,7 +41,7 @@ function WorkersPerFacility() {
         value={chosen.label? chosen :{label: "Choose", value: ""}}
         placeholder="Select an option"
       />
-      {data[0] &&
+      {data[0]?
             <Card className="marginBottom">
               <Card.Header>
                 {data[0].facility}
@@ -55,6 +55,8 @@ function WorkersPerFacility() {
                 </Card.Text>
               </Card.Body>
             </Card>
+            :
+            <span>No current workers<br/></span>
         }
         <Button onClick={search}>Search</Button>
     </div>

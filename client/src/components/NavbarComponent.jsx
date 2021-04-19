@@ -12,11 +12,11 @@ export default function NavbarComponent() {
             <NavDropdown.Item href="/1">CRUD Person</NavDropdown.Item>
             <NavDropdown.Item href="/9">Date People Symptoms</NavDropdown.Item>
             <NavDropdown.Item href="/11">People By Address</NavDropdown.Item>
-            <NavDropdown.Item href="/14">TODO14??</NavDropdown.Item>
+            <NavDropdown.Item href="/14">People By Date</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Public Health Worker">
             <NavDropdown.Item href="/2">Public Health Worker</NavDropdown.Item>
-            <NavDropdown.Item href="/16">TODO16</NavDropdown.Item>
+            <NavDropdown.Item href="/16">Infceted Workers</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Facility">
             <NavDropdown.Item href="/3">CRUD Facility</NavDropdown.Item>

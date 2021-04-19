@@ -19,7 +19,7 @@ function DetailedRegion() {
           let cities = x.city_postal_codes?.split(",");
           return (
             <Card className="marginBottom">
-              <Card.Header>{x["Region Name"]}</Card.Header>
+              <Card.Header><h3>{x["Region Name"]}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   {cities ? (
@@ -33,7 +33,7 @@ function DetailedRegion() {
                       });
                       return (
                         <div>
-                          <h3>{cityName}</h3>
+                          <h5>{cityName}</h5>
                           Postal codes:{" "}
                           {postalCodes.map((x) => {
                             return (

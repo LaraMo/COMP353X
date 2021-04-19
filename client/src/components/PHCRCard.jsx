@@ -89,7 +89,7 @@ export default function PHCRCard(props) {
           {steps &&
           <Form.Group as={Row}>
             <Form.Label column sm="2">
-             substeps
+             Substeps
             </Form.Label>
             <Col sm="10">
               {steps.map((x, i) => {

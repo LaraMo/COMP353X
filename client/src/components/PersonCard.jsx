@@ -1,26 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Dropdown from "react-dropdown";
 import DatePicker from "react-date-picker";
-
+import { Alert, Button, Card as CardContainer, Col, Form, Row } from "react-bootstrap";
+import { Briefcase, Calendar, Frown, Home, Mail, Phone, Smile, X } from "react-feather";
 import "react-dropdown/style.css";
-import {
-  Alert,
-  Button,
-  Card as CardContainer,
-  Col,
-  Form,
-  Row,
-} from "react-bootstrap";
-import {
-  Briefcase,
-  Calendar,
-  Frown,
-  Home,
-  Mail,
-  Phone,
-  Smile,
-  X,
-} from "react-feather";
+
 
 export default function PersonCard(props) {
   let [listOfCities, setListOfCities] = useState([]);
@@ -69,7 +53,6 @@ export default function PersonCard(props) {
     facility,
     mother,
     father,
-    city_id,
     city_name,
     postal_code_id,
   } = person;
@@ -158,9 +141,14 @@ export default function PersonCard(props) {
         <div className="crudContainer-isInfected">
           <input
             type="checkbox"
-            onChange={(e) => mode ==="add" ? 
-            props.setAddPerson({ ...props.addPerson, is_infected: e.target.checked })
-            : setPerson({ ...person, is_infected: e.target.checked })}
+            onChange={(e) =>
+              mode === "add"
+                ? props.setAddPerson({
+                    ...props.addPerson,
+                    is_infected: e.target.checked,
+                  })
+                : setPerson({ ...person, is_infected: e.target.checked })
+            }
             value={is_infected}
           />
           <label>Is Infected</label>
@@ -321,42 +309,51 @@ export default function PersonCard(props) {
                 />
                 {isEdit || mode === "add" ? (
                   listOfCities && (
-                    <Dropdown
-                      className="marginBottom"
-                      options={listOfCities}
-                      onChange={(x) =>
+                    <>
+                      <small>City Name</small>
+
+                      <Dropdown
+                        className="marginBottom"
+                        options={listOfCities}
+                        onChange={(x) =>
+                          mode === "add"
+                            ? props.setAddPerson({
+                                ...props.addPerson,
+                                city_id: x.value,
+                                city_name: x.label,
+                              })
+                            : setPerson({
+                                ...person,
+                                city_name: x.label,
+                                city_id: x.value,
+                              })
+                        }
+                        value={person.city_name}
+                        placeholder="Select an option"
+                      />
+                    </>
+                  )
+                ) : (
+                  <>
+                    <small>City Name</small>
+
+                    <input
+                      size="6"
+                      name="city_name"
+                      onChange={(e) =>
                         mode === "add"
                           ? props.setAddPerson({
                               ...props.addPerson,
-                              city_id: x.value,
-                              city_name: x.label,
+                              city_name: e.target.value,
                             })
-                          : setPerson({
-                              ...person,
-                              city_name: x.label,
-                              city_id: x.value,
-                            })
+                          : onChange(e)
                       }
-                      value={person.city_name}
-                      placeholder="Select an option"
+                      value={city_name}
+                      readOnly={!isEdit}
                     />
-                  )
-                ) : (
-                  <input
-                    size="6"
-                    name="city_name"
-                    onChange={(e) =>
-                      mode === "add"
-                        ? props.setAddPerson({
-                            ...props.addPerson,
-                            city_name: e.target.value,
-                          })
-                        : onChange(e)
-                    }
-                    value={city_name}
-                    readOnly={!isEdit}
-                  />
+                  </>
                 )}
+                <small>Province</small>
 
                 <input
                   size="1"
@@ -372,6 +369,7 @@ export default function PersonCard(props) {
                   value={province}
                   readOnly={!isEdit}
                 />
+                <small>Postal code</small>
                 <input
                   size="6"
                   name="postal_code"
@@ -409,93 +407,6 @@ export default function PersonCard(props) {
               />
             </Col>
           </Form.Group>
-          {mode === "view" && (
-            <>
-              <Form.Group as={Row}>
-                <Form.Label column sm="2">
-                  Mother
-                </Form.Label>
-                <Col sm="10">
-                  <input value={mother} readOnly />
-                </Col>
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Form.Label column sm="2">
-                  Father
-                </Form.Label>
-                <Col sm="10">
-                  <input value={father} readOnly />
-                </Col>
-              </Form.Group>
-            </>
-          )}
-          {isPhw && mode !== "view" && (
-            <Alert variant="primary">
-              <Alert.Heading>Public health care worker info</Alert.Heading>
-              <p>
-                {first_name && last_name && (
-                  <p> is a public health care worker</p>
-                )}
-              </p>
-              <hr />
-              <Form.Group as={Row}>
-                <Form.Label column sm="2">
-                  <Calendar /> Start date
-                </Form.Label>
-                <Col sm="10">
-                  <input
-                    sie="3"
-                    name="startDate"
-                    onChange={onChange}
-                    value={startDate}
-                    readOnly={!isEdit}
-                  />
-                </Col>
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Form.Label column sm="2">
-                  <Calendar /> End date
-                </Form.Label>
-                <Col sm="10">
-                  <input
-                    sie="3"
-                    name="endDate"
-                    onChange={onChange}
-                    value={endDate}
-                    readOnly={!isEdit}
-                  />
-                </Col>
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Form.Label column sm="2">
-                  <Calendar /> Schedual
-                </Form.Label>
-                <Col sm="10">
-                  <input
-                    sie="3"
-                    name="schedual"
-                    onChange={onChange}
-                    value={schedual}
-                    readOnly={!isEdit}
-                  />
-                </Col>
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Form.Label column sm="2">
-                  <Briefcase /> Works at
-                </Form.Label>
-                <Col sm="10">
-                  <input
-                    sie="3"
-                    name="facility"
-                    onChange={onChange}
-                    value={facility}
-                    readOnly={!isEdit}
-                  />
-                </Col>
-              </Form.Group>
-            </Alert>
-          )}
         </Form>
       </CardContainer.Body>
 
@@ -509,14 +420,12 @@ export default function PersonCard(props) {
               }}
               variant="primary"
             >
-              {" "}
-              Save{" "}
+              Save
             </Button>
           )}
           {!isEdit && (
             <Button onClick={() => setIsEdit(true)} variant="primary">
-              {" "}
-              Edit{" "}
+              Edit
             </Button>
           )}
         </div>

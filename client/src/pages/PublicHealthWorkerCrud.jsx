@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PersonCard from "../components/PersonCard";
 import { Button, Modal } from "react-bootstrap";
 import CrudTitle from "../molecules/CrudTitle";
 import PublicHealthWorker from "../components/PublicHealthWorker";
@@ -12,8 +11,7 @@ function PublicHealthWorkerCrud(props) {
 
 
   function add() {
-    console.log(addPerson)
-    fetch('http://localhost:3001/addPerson', {
+    fetch('http://localhost:3001/addPhcw', {
       method: "POST", 
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +48,7 @@ function PublicHealthWorkerCrud(props) {
           <Modal.Title>Add New PHW</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <PublicHealthWorker addPerson={addPerson} setAddPerson={setAddPerson} mode="add" isPhw={isPhw}/>
+          <PublicHealthWorker addPerson={addPerson} setAddPerson={setAddPerson} mode="add" />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setIsAdd(false)}>

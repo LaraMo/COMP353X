@@ -62,11 +62,14 @@ useEffect(() => {
               value={chosen.date}
             />
           </Form.Group>
+          <br/>
           <Button onClick={search}>Search</Button>
           <br/>
           {results.length ===0? 
           <div>No Results</div>
           :
+          <>
+          <br/>
               <Card>
               <Card.Header>{results[0].first_name} {results[0].last_name}</Card.Header>
               <Card.Body>
@@ -77,7 +80,7 @@ useEffect(() => {
                 </Card.Text>
               </Card.Body>
             </Card>
-            
+          </>
           }
       </Form.Group>
     </div>

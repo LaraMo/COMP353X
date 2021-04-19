@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Navbar from "./components/NavbarComponent";
-import { home,crudPerson,crudHealthWorker, detailedFacility, peopleByAddress, showMessages, crudFacility, followUpForm, crudRegion, crudGroupZone, crudPHCR, addAlert, datePeopleSymptoms, workersPerFacility, regionReport, detailedRegion  } from './data/routes.js';
+import { home,crudPerson,crudHealthWorker, detailedFacility, peopleByAddress, showMessages, crudFacility, followUpForm, crudRegion, crudGroupZone, crudPHCR, addAlert, datePeopleSymptoms, workersPerFacility, regionReport, detailedRegion, peopleByDate, infectedWorkers  } from './data/routes.js';
 import PersonCrud from './pages/PersonCrud.jsx';
 import FacilityCrud from './pages/FacilityCrud.jsx';
 import RegionCrud from './pages/RegionCrud.jsx';
@@ -18,6 +18,8 @@ import DatePeopleSymptoms from './pages/DatePeopleSymptoms.jsx';
 import WorkersPerFacility from './pages/WorkersPerFacility.jsx';
 import RegionReport from './pages/RegionReport.jsx';
 import DetailedRegion from './pages/DetailedRegions.jsx';
+import PeopleByDate from './pages/PeopleByDate.jsx';
+import InfectedWorkers from './pages/InfectedWorkers.jsx';
 import './scss/app.scss';
 
 
@@ -43,6 +45,8 @@ export default function App(){
               <Route path={detailedRegion} component={DetailedRegion} /> 
               <Route path={workersPerFacility} component={WorkersPerFacility} /> 
               <Route path={regionReport} component={RegionReport} /> 
+              <Route path={peopleByDate} component={PeopleByDate} /> 
+              <Route path={infectedWorkers} component={InfectedWorkers} /> 
           </Switch>
     </Router>
     );
