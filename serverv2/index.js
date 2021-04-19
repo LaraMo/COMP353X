@@ -609,7 +609,7 @@ app.get('/detailFacilities', (req, res) => {
 })
 
 /********************** /13 *******************/
-app.get('/regionDetails', (req, res) => {
+app.get('/detailRegion', (req, res) => {
   db.query("SELECT  distinct r.id, r.name as 'Region Name', group_concat(Distinct c.name) as Cities, group_concat( distinct pc.postal_code) as 'Postal Codes' FROM Region as r JOIN City c ON r.id = c.region_id JOIN PostalCode pc ON c.id = pc.city_id GROUP BY r.id, r.name;", function(error, results, fields){
     if (error) {
       console.log(error)
@@ -636,7 +636,7 @@ app.get('/query14', (req, res) => {
 })
 
 /********************** /15 *******************/
-app.get('/query15', (req, res) => {
+app.get('/getWorkersPerFacility', (req, res) => {
   let {id} = req.query;
   db.query("SELECT Person.first_name, Person.last_name FROM Person INNER JOIN PublicHealthWorker ON Person.id = PublicHealthWorker.person_id INNER JOIN PublicHealthCenterWorkers ON PublicHealthWorker.id = PublicHealthCenterWorkers.phw_id WHERE PublicHealthCenterWorkers.phc_id = ?;", [id], function(error, results, fields){
     if (error) {
