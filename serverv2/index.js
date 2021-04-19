@@ -610,7 +610,7 @@ app.get('/detailFacilities', (req, res) => {
 
 /********************** /13 *******************/
 app.get('/detailRegion', (req, res) => {
-  db.query("SELECT r.id, r.name as 'Region Name', group_concat(distinct CONCAT(city.name, ':', (SELECT group_concat(ppc.postal_code separator '|') FROM PostalCode ppc where ppc.city_id = city.id group by ppc.city_id))) as city_postal_codes FROM Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id GROUP BY r.id, r.name;", function(error, results, fields){
+  db.query("SELECT r.id, r.name as 'Region Name', group_concat(distinct CONCAT(city.name, ':', (SELECT group_concat(distinct ppc.postal_code separator '|') FROM PostalCode ppc where ppc.city_id = city.id group by ppc.city_id))) as city_postal_codes FROM Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id GROUP BY r.id, r.name;", function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
