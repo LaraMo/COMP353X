@@ -584,8 +584,7 @@ app.get('/showMessages', (req, res) => {
 /********************** /11 *******************/
 app.get('/peopleByAddress', (req, res) => {
   let {address} = req.query;
-  console.log(address)
-  db.query("SELECT p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.citizenship, p.email_address, p.parent1_id, p.parent2_id FROM Person p WHERE p.address = ?;", [address], function(error, results, fields){
+  db.query("SELECT DISTINCT p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.citizenship, p.email_address, CONCAT(parent1.first_name, ' ', parent1.last_name) as parent1, CONCAT(parent2.first_name, ' ', parent2.last_name) as parent2 FROM Person p LEFT JOIN Person parent1 on (parent1.id = p.parent1_id) LEFT JOIN Person parent2 on (parent2.id = p.parent2_id  AND parent2.id <> parent1.id); ", [address], function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
@@ -598,7 +597,7 @@ app.get('/peopleByAddress', (req, res) => {
 
 /********************** /12 *******************/
 app.get('/detailFacilities', (req, res) => {
-  db.query("SELECT phc.id, phc.address, SUM(phcw.phw_id) as number_of_workers, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough FROM PublicHealthCenter phc JOIN PublicHealthCenterWorkers phcw on phcw.phc_id = phc.id GROUP BY phc.id, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough;", function(error, results, fields){
+  db.query("SELECT phc.id, phc.address, SUM(phcw.phw_id) as number_of_workers, phc.name, phc.phone_number, phc.web_address, phc.type, IF(phc.has_drivethrough = 1, \"true\", \"false\") as has_drivethrough FROM PublicHealthCenter phc JOIN PublicHealthCenterWorkers phcw on phcw.phc_id = phc.id GROUP BY phc.id, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough;", function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
