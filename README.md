@@ -10,6 +10,7 @@ Make sure to have `node.js` installed on your computer
 ```bash
 cd client #from the root folder to the client
 ls #make sure that package.json is in this folder
+npm install #to install the needed dependencies
 npm run start #to start the project
 ```
 
@@ -20,8 +21,9 @@ will be running on localhost:3000
 ### run the server
 
 ```bash
-cd severv2 #the root folder to the serverv2
+cd severv2 #from the root folder to the serverv2
 ls #make sure that package.json is in this folder
+npm install #to install the needed dependencies
 npm run start #to start the project
 ```
 
