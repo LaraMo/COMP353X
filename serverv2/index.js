@@ -596,7 +596,7 @@ app.get('/query11', (req, res) => {
 
 /********************** /12 *******************/
 app.get('/query12', (req, res) => {
-  db.query("SELECT phc.id, phc.address, SUM(phcw.phw_id) as number_of_workers, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough FROM PublicHealthCenter phc JOIN PublicHealthCenterWorkers phcw on phcw.phc_id = phc.id GROUP BY phc.id, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough;", function(error, results, fields){
+  db.query("SELECT phc.id, phc.address, SUM(phcw.phw_id) as number_of_workers, phc.name, phc.phone_number, phc.web_address, phc.type, IF(phc.has_drivethrough = 1, \"true\", \"false\") as has_drivethrough FROM PublicHealthCenter phc JOIN PublicHealthCenterWorkers phcw on phcw.phc_id = phc.id GROUP BY phc.id, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough;", function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
