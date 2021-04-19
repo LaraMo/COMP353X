@@ -542,6 +542,7 @@ app.post('/followUpForm', (req, res) => {
 /********************* /9 **********************/
 app.get('/datePeopleSymptoms', (req, res) => {
     let {date, id} = req.query;
+    console.log(date, id)
     db.query("SELECT  p.first_name, p.last_name, group_concat(s.symptom) as 'Common Symptom', group_concat(ds.other) as 'Other Symptoms' FROM DiagnosticSymptoms as ds INNER JOIN Diagnostic as d ON ds.Diagnostic_id = d.id INNER JOIN Person as p ON d.person_id = p.id INNER JOIN Symptom as s ON ds.Symptom_id = s.id WHERE p.id = ? AND d.date_taken = ? GROUP BY p.first_name;", [id, date], function(error, results, fields){
         if (error) {
             console.log(error)
@@ -581,7 +582,7 @@ app.get('/showMessages', (req, res) => {
 })
 
 /********************** /11 *******************/
-app.get('/query11', (req, res) => {
+app.get('/peopleByAddress', (req, res) => {
   let {address} = req.query;
   db.query("SELECT DISTINCT p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.citizenship, p.email_address, CONCAT(parent1.first_name, ' ', parent1.last_name) as parent1, CONCAT(parent2.first_name, ' ', parent2.last_name) as parent2 FROM Person p LEFT JOIN Person parent1 on (parent1.id = p.parent1_id) LEFT JOIN Person parent2 on (parent2.id = p.parent2_id  AND parent2.id <> parent1.id) WHERE p.address = ?; ", [address], function(error, results, fields){
     if (error) {
@@ -595,7 +596,7 @@ app.get('/query11', (req, res) => {
 })
 
 /********************** /12 *******************/
-app.get('/query12', (req, res) => {
+app.get('/detailFacilities', (req, res) => {
   db.query("SELECT phc.id, phc.address, SUM(phcw.phw_id) as number_of_workers, phc.name, phc.phone_number, phc.web_address, phc.type, IF(phc.has_drivethrough = 1, \"true\", \"false\") as has_drivethrough FROM PublicHealthCenter phc JOIN PublicHealthCenterWorkers phcw on phcw.phc_id = phc.id GROUP BY phc.id, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough;", function(error, results, fields){
     if (error) {
       console.log(error)
@@ -608,7 +609,7 @@ app.get('/query12', (req, res) => {
 })
 
 /********************** /13 *******************/
-app.get('/query13', (req, res) => {
+app.get('/detailRegion', (req, res) => {
   db.query("SELECT r.id, r.name as 'Region Name', group_concat(distinct CONCAT(city.name, ':', (SELECT group_concat(ppc.postal_code separator '|') FROM PostalCode ppc where ppc.city_id = city.id group by ppc.city_id))) as city_postal_codes FROM Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id GROUP BY r.id, r.name;", function(error, results, fields){
     if (error) {
       console.log(error)
@@ -635,7 +636,7 @@ app.get('/query14', (req, res) => {
 })
 
 /********************** /15 *******************/
-app.get('/query15', (req, res) => {
+app.get('/getWorkersPerFacility', (req, res) => {
   let {id} = req.query;
   db.query("SELECT PublicHealthCenter.name as facility, group_concat(concat(Person.first_name, ' ', Person.last_name)) as workers FROM Person INNER JOIN PublicHealthWorker ON Person.id = PublicHealthWorker.person_id INNER JOIN PublicHealthCenterWorkers ON PublicHealthWorker.id = PublicHealthCenterWorkers.phw_id INNER JOIN PublicHealthCenter on PublicHealthCenter.id = PublicHealthCenterWorkers.phc_id WHERE PublicHealthCenter.id = ? GROUP BY PublicHealthCenter.id, PublicHealthCenter.name;", [id], function(error, results, fields){
     if (error) {
@@ -663,7 +664,7 @@ app.get('/query16', (req, res) => {
 })
 
 /********************** /17 *******************/
-app.get('/query17', (req, res) => {
+app.get('/regionReport', (req, res) => {
     let {start_date, end_date} = req.query;
   db.query("SELECT r.id as regID, r.name as regName, count(distinct infected.id) as infected, count(distinct healthy.id) as healthy, group_concat(distinct m.message separator '|') AS allmessages From Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id LEFT JOIN Person infected on (pc.id = infected.postal_code AND infected.is_infected = true) LEFT JOIN Person healthy on (pc.id = healthy.postal_code AND healthy.is_infected = false) LEFT JOIN Messages m ON r.id = m.region_id Where (m.time between ? and ?) or m.time is null GROUP by r.id, r.name;", [start_date, end_date], function(error, results, fields){
     if (error) {
