@@ -375,6 +375,7 @@ export default function PublicHealthWorker(props) {
                         onChange={(x) =>
                           setPerson({
                             ...person,
+                            phc_id: phc_id,
                             facility: x.label,
                             new_phc_id: x.value,
                           })

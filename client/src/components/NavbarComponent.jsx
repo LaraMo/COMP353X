@@ -20,12 +20,12 @@ export default function NavbarComponent() {
           </NavDropdown>
           <NavDropdown title="Facility">
             <NavDropdown.Item href="/3">CRUD Facility</NavDropdown.Item>
-            <NavDropdown.Item href="/12">DETAILED Facility</NavDropdown.Item>
-            <NavDropdown.Item href="/15">TODO15</NavDropdown.Item>
+            <NavDropdown.Item href="/12">Detailed Facility</NavDropdown.Item>
+            <NavDropdown.Item href="/15">Workers Per Facility</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Region">
             <NavDropdown.Item href="/4">CRUD Region</NavDropdown.Item>
-            <NavDropdown.Item href="/13">TODO13</NavDropdown.Item>
+            <NavDropdown.Item href="/13">Detailed Region</NavDropdown.Item>
             <NavDropdown.Item href="/17">TODO17</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="GroupZone">

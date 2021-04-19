@@ -2,23 +2,23 @@ import React, { useEffect, useState } from "react";
 import {Card} from 'react-bootstrap';
 import CrudTitle from "../molecules/CrudTitle";
 
-function DetailedFacility() {
+function DetailedRegion() {
   let [facility, setFacility] = useState([]);
 
-  useEffect(() => {
-    fetch("http://localhost:3001/detailFacilities")
-      .then((response) => response.json())
-      // .then((d) => console.log(d))
-      .then((data) =>setFacility(data.data));
-  },[]);
+  // useEffect(() => {
+  //   fetch("http://localhost:3001/detailRegion")
+  //     .then((response) => response.json())
+  //     .then((d) => console.log(d))
+  //     // .then((data) =>setRegion(data.data));
+  // },[]);
 
   return (
     <div className="crudContainer">
       <CrudTitle
-        title="DETAILED Facility 🏥"
-        subTitle="View detailed facility"
+        title="DETAILED Region 🗺️"
+        subTitle="View detailed region"
       />
-         {facility.map((x) => {
+         {region.map((x) => {
           return (
             <Card className="marginBottom">
               <Card.Header>
@@ -47,4 +47,4 @@ function DetailedFacility() {
   );
 }
 
-export default DetailedFacility;
+export default DetailedRegion;

@@ -1,91 +1,60 @@
 import React, { useState } from "react";
-import { Form } from "react-bootstrap";
-import PersonCard from "../components/PersonCard";
+import { Button, Form, Card } from "react-bootstrap";
 import CrudTitle from "../molecules/CrudTitle";
 
-
 function PeopleByAddress() {
-    let[search, setSearch] = useState();
+  let [address, setAddress] = useState();
+  let [results, setResults] = useState([]);
+
+  function search() {
+    fetch("http://localhost:3001/peopleByAddress?address=" + address)
+      .then((response) => response.json())
+      .then((data) => setResults(data.data));
+  }
+
   return (
     <div className="crudContainer">
-    <CrudTitle
+      <CrudTitle
         title="Search for people 🕵️"
         subTitle="Search for people by their address"
       />
-    <Form>
-      <Form.Group size="lg" controlId="user">
-        <Form.Label>Search by address</Form.Label>
-        <Form.Control
-          autoFocus
-          type="user"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+      <Form>
+        <Form.Group size="lg" controlId="user">
+          <Form.Label>Search by address</Form.Label>
+          <Form.Control
+            autoFocus
+            type="user"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
         </Form.Group>
-        {tempData.map(x => {
-           return <PersonCard mode="view" isPhw={false} {...x}/>
+        {results.map((x) => {
+          return (
+            <Card className="marginBottom">
+              {console.log(x)}
+              <small>{x.parent1 && x.parent2 && <span>Child of: {x.parent1} and {x.parent2}</span>}</small>
+              <Card.Header>
+                {x.first_name} {x.last_name} -{" "}
+                <span style={{ color: "blue" }}>#{x.medicare_number}</span>{" "}
+              </Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  Email: {x.email_address}
+                  <br />
+                  Phone: {x.telephone_number}
+                  <br />
+                  DOB: {new Date(x.date_of_birth).toLocaleDateString()}
+                  <br />
+                  Citizenship: {x.citizenship}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          );
         })}
-    </Form>
+        <Button onClick={search}>Search</Button>
+      </Form>
     </div>
   );
 }
-
-
-const tempData = [
-    {
-      id: "1",
-      first: "Layla",
-      last: "Manoo",
-      dob: "16/31/44",
-      med: "349-23-2444",
-      telephone: "439-435-222",
-      address: "Maple Street 35",
-      province: "QC",
-      email: "Layla@gmail.com",
-      isInfected: true,
-      citizenship:"Canadian",
-      postalCode: "H38-WH2",
-      father: "Jim Morris",
-      mother: "Maya Jaejo"
-    },
-    {
-      id: "2",
-      first: "Layla",
-      last: "Manoo",
-      dob: "16/31/44",
-      med: "349-23-2444",
-      telephone: "439-435-222",
-      address: "Maple Street 35",
-      province: "QC",
-      email: "Layla@gmail.com",
-      isInfected: false,
-      citizenship:"Canadian",
-      postalCode: "H38-WH2",
-      father: "Maod Morris",
-      mother: "Kopr Jaejo"
-    },
-    {
-      id: "3",
-      first: "Layla",
-      last: "Manoo",
-      dob: "16/31/44",
-      med: "349-23-2444",
-      telephone: "439-435-222",
-      address: "Maple Street 35",
-      province: "QC",
-      citizenship:"Canadian",
-      email: "Layla@gmail.com",
-      isInfected: false,
-      isPhw: true,
-      startDate: "16/31/44",
-      endDate: "16/31/44",
-      schedual: "Monday - Friday",
-      facility: "Saint Marry",
-      postalCode: "H38-WH2",
-      father: "Priyapus Morris",
-      mother: "Date Jaejo"
-    },
-  ];
-  
 
 export default PeopleByAddress;
