@@ -609,7 +609,7 @@ app.get('/query12', (req, res) => {
 
 /********************** /13 *******************/
 app.get('/query13', (req, res) => {
-  db.query("SELECT  distinct r.id, r.name as 'Region Name', group_concat(Distinct c.name) as Cities, group_concat( distinct pc.postal_code) as 'Postal Codes' FROM Region as r JOIN City c ON r.id = c.region_id JOIN PostalCode pc ON c.id = pc.city_id GROUP BY r.id, r.name;", function(error, results, fields){
+  db.query("SELECT r.id, r.name as 'Region Name', group_concat(CONCAT(city.name, ':', (SELECT group_concat(ppc.postal_code separator '|') FROM PostalCode ppc where ppc.city_id = city.id group by ppc.city_id))) as city_postal_codes FROM Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id GROUP BY r.id, r.name;", function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
