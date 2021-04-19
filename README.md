@@ -3,7 +3,7 @@
 
 ## How to run this locally?
 
-Make sure to have `node.js` installed on your computer
+Make sure to have `node.js` installed on your computer and clone this repo using `git clone https://github.com/LaraMo/COMP353X.git`
 
 ### run the client
 
