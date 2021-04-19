@@ -638,7 +638,7 @@ app.get('/query14', (req, res) => {
 /********************** /15 *******************/
 app.get('/getWorkersPerFacility', (req, res) => {
   let {id} = req.query;
-  db.query("SELECT Person.first_name, Person.last_name FROM Person INNER JOIN PublicHealthWorker ON Person.id = PublicHealthWorker.person_id INNER JOIN PublicHealthCenterWorkers ON PublicHealthWorker.id = PublicHealthCenterWorkers.phw_id WHERE PublicHealthCenterWorkers.phc_id = ?;", [id], function(error, results, fields){
+  db.query("SELECT PublicHealthCenter.name as facility, group_concat(concat(Person.first_name, ' ', Person.last_name)) as workers FROM Person INNER JOIN PublicHealthWorker ON Person.id = PublicHealthWorker.person_id INNER JOIN PublicHealthCenterWorkers ON PublicHealthWorker.id = PublicHealthCenterWorkers.phw_id INNER JOIN PublicHealthCenter on PublicHealthCenter.id = PublicHealthCenterWorkers.phc_id WHERE PublicHealthCenter.id = ? GROUP BY PublicHealthCenter.id, PublicHealthCenter.name;", [id], function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
