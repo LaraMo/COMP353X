@@ -542,6 +542,7 @@ app.post('/followUpForm', (req, res) => {
 /********************* /9 **********************/
 app.get('/datePeopleSymptoms', (req, res) => {
     let {date, id} = req.query;
+    console.log(date, id)
     db.query("SELECT  p.first_name, p.last_name, group_concat(s.symptom) as 'Common Symptom', group_concat(ds.other) as 'Other Symptoms' FROM DiagnosticSymptoms as ds INNER JOIN Diagnostic as d ON ds.Diagnostic_id = d.id INNER JOIN Person as p ON d.person_id = p.id INNER JOIN Symptom as s ON ds.Symptom_id = s.id WHERE p.id = ? AND d.date_taken = ? GROUP BY p.first_name;", [id, date], function(error, results, fields){
         if (error) {
             console.log(error)
@@ -581,8 +582,9 @@ app.get('/showMessages', (req, res) => {
 })
 
 /********************** /11 *******************/
-app.get('/query11', (req, res) => {
+app.get('/peopleByAddress', (req, res) => {
   let {address} = req.query;
+  console.log(address)
   db.query("SELECT p.id, p.first_name, p.last_name, p.date_of_birth, p.medicare_number, p.telephone_number, p.citizenship, p.email_address, p.parent1_id, p.parent2_id FROM Person p WHERE p.address = ?;", [address], function(error, results, fields){
     if (error) {
       console.log(error)
@@ -595,7 +597,7 @@ app.get('/query11', (req, res) => {
 })
 
 /********************** /12 *******************/
-app.get('/query12', (req, res) => {
+app.get('/detailFacilities', (req, res) => {
   db.query("SELECT phc.id, phc.address, SUM(phcw.phw_id) as number_of_workers, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough FROM PublicHealthCenter phc JOIN PublicHealthCenterWorkers phcw on phcw.phc_id = phc.id GROUP BY phc.id, phc.name, phc.phone_number, phc.web_address, phc.type, phc.has_drivethrough;", function(error, results, fields){
     if (error) {
       console.log(error)
@@ -608,7 +610,7 @@ app.get('/query12', (req, res) => {
 })
 
 /********************** /13 *******************/
-app.get('/query13', (req, res) => {
+app.get('/regionDetails', (req, res) => {
   db.query("SELECT  distinct r.id, r.name as 'Region Name', group_concat(Distinct c.name) as Cities, group_concat( distinct pc.postal_code) as 'Postal Codes' FROM Region as r JOIN City c ON r.id = c.region_id JOIN PostalCode pc ON c.id = pc.city_id GROUP BY r.id, r.name;", function(error, results, fields){
     if (error) {
       console.log(error)
