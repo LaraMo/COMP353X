@@ -15,4 +15,4 @@ export const detailedRegion = '/13';
 // export const foutteen = '/14';
 export const workersPerFacility = '/15';
 // export const sixteen = '/16';
-// export const seventeen = '/17';
+export const regionReport = '/17';

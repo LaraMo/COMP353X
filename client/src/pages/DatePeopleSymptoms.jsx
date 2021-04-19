@@ -4,21 +4,25 @@ import { Alert, Button, Col, Form, Card } from "react-bootstrap";
 import CrudTitle from "../molecules/CrudTitle";
 import Dropdown from "react-dropdown";
 
+
+
 function DatePeopleSymptoms() {
 const [chosen, setChosen]= useState({person_id:"", label: "",  date:""});
 let [results, setResults]= useState([])
 let[ people, setPeople] = useState([]);
-  useEffect(() => {
-    fetch("http://localhost:3001/infectedPeople")
-      .then((response) => response.json())
-      .then((data) =>
-        setPeople(
-          data.data.map((x) => {
-            return { value: x.id, label: x.first_name + " " + x.last_name };
-          })
-        )
-      );
-  });
+
+useEffect(() => {
+  fetch("http://localhost:3001/infectedPeople")
+    .then((response) => response.json())
+    .then((data) =>
+    setPeople(
+        data.data.map((x) => {
+          return { value: x.id, label: x.first_name + " " + x.last_name };
+        })
+      )
+    );
+});
+
 
   function search(){
     let date = chosen.date? new Date(chosen.date).toISOString().slice(0, 10): '';

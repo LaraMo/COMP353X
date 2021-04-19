@@ -4,7 +4,7 @@ import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 export default function NavbarComponent() {
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="#home"> 🦠COVID 19 - COMP 353X</Navbar.Brand>
+      <Navbar.Brand href="/"> 🦠COVID 19 - COMP 353X</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
@@ -26,7 +26,7 @@ export default function NavbarComponent() {
           <NavDropdown title="Region">
             <NavDropdown.Item href="/4">CRUD Region</NavDropdown.Item>
             <NavDropdown.Item href="/13">Detailed Region</NavDropdown.Item>
-            <NavDropdown.Item href="/17">TODO17</NavDropdown.Item>
+            <NavDropdown.Item href="/17">Region Report</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="GroupZone">
             <NavDropdown.Item href="/5">CRUD GroupZone</NavDropdown.Item>

@@ -4,7 +4,7 @@ import { Alert, Col, Form } from "react-bootstrap";
 import CrudTitle from "../molecules/CrudTitle";
 import moment from 'moment';
 moment().format();
-function DatePeopleSymptoms() {
+function ShowMessages() {
 
 const [startDate, setStartDate] = useState();
 const [endDate, setEndDate] = useState();
@@ -64,4 +64,4 @@ useEffect(() => {
 }
 
 
-export default DatePeopleSymptoms;
+export default ShowMessages;
