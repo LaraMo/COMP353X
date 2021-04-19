@@ -624,7 +624,7 @@ app.get('/detailRegion', (req, res) => {
 /********************** /14 *******************/
 app.get('/query14', (req, res) => {
   let {date} = req.query;
-  db.query("SELECT phcw.phc_id, infected.id as infected_id, infected.first_name as \"infected first name\", infected.last_name as \"infected first name\", (SELECT group_concat(CONCAT(colleagues.first_name, ' ', colleagues.last_name)) FROM Person colleagues JOIN PublicHealthWorker sphw on sphw.person_id = colleagues.id JOIN PublicHealthCenterWorkers sphcw on sphcw.phw_id = sphw.id WHERE sphcw.phc_id = phcw.phc_id AND sphcw.schedule = phcw.schedule AND (diag.date_resolved - sphcw.start_date) >= 14) as \"Infected Colleagues\" from Person infected JOIN PublicHealthWorker worker on worker.person_id = infected.id JOIN Diagnostic diag on diag.person_id = infected.idJOIN PublicHealthCenter phc on diag.phc_id = phc.id JOIN PublicHealthCenterWorkers phcw on phcw.phw_id = worker.id WHERE diag.is_infected = true AND diag.date_taken = ?", [date], function(error, results, fields){
+  db.query("SELECT Person.first_name, Person.last_name, Person.date_of_birth, Person.telephone_number, Person.email_address, Diagnostic.is_infected FROM Person INNER JOIN Diagnostic ON Person.id = Diagnostic.person_id WHERE Diagnostic.date_taken = ? ORDER BY Diagnostic.is_infected DESC;", [date], function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
