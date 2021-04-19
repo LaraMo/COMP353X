@@ -665,7 +665,7 @@ app.get('/query16', (req, res) => {
 
 /********************** /17 *******************/
 app.get('/query17', (req, res) => {
-  db.query("SELECT r.id as regID, r.name as regName, count(infected.id) as infected, count(healthy.id) as healthy, group_concat(distinct m.message) AS allmessages From Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id LEFT JOIN Person infected on (pc.id = infected.postal_code AND infected.is_infected = true) LEFT JOIN Person healthy on (pc.id = healthy.postal_code AND healthy.is_infected = false) LEFT JOIN Messages m ON r.id = m.region_id GROUP by r.id, r.name", function(error, results, fields){
+  db.query("SELECT r.id as regID, r.name as regName, count(infected.id) as infected, count(healthy.id) as healthy, group_concat(distinct m.message separator '|') AS allmessages From Region r LEFT JOIN City city ON r.id = city.region_id LEFT JOIN PostalCode pc ON city.id = pc.city_id LEFT JOIN Person infected on (pc.id = infected.postal_code AND infected.is_infected = true) LEFT JOIN Person healthy on (pc.id = healthy.postal_code AND healthy.is_infected = false) LEFT JOIN Messages m ON r.id = m.region_id WHERE m.time between ? and ? GROUP by r.id, r.name;", function(error, results, fields){
     if (error) {
       console.log(error)
       res.send({ success: false });
